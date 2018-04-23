@@ -29,7 +29,6 @@ public class IntroView extends JPanel
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.insets = new Insets(0,0,10,10);
         gbc.gridy++;
-        gbc.ipady = 5;
         super.add(this.play, gbc);
         gbc.gridy++;
         super.add(this.settings, gbc);
@@ -48,6 +47,7 @@ public class IntroView extends JPanel
         this.play.setPreferredSize(this.buttonsize);
         this.play.setOpaque(false);
         this.play.setFocusPainted(false);
+        this.play.addActionListener(e -> GameFrame.getFrame().setContentPane(null));
 
         this.settings = new JButton("Settings");
         this.settings.setFont(Fonts.introScreenButtons());
@@ -55,6 +55,11 @@ public class IntroView extends JPanel
         this.settings.setOpaque(false);
         this.settings.setFocusPainted(false);
         this.settings.setForeground(Colors.fontColor());
+        this.settings.addActionListener(e ->
+        {
+            GameFrame.getFrame().setContentPane(new SettingsView());
+            GameFrame.getFrame().revalidate();
+        });
 
         this.exit = new JButton("Exit");
         this.exit.setFont(Fonts.introScreenButtons());

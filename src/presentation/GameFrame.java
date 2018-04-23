@@ -32,9 +32,13 @@ public class GameFrame implements Runnable
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.mainPanel = new JPanel(new BorderLayout());
 
-        mainPanel.add(new SettingsView(), BorderLayout.CENTER);
+        mainPanel.add(new IntroView(), BorderLayout.CENTER);
         frame.setContentPane(mainPanel);
+        frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
+                        (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
         frame.setSize(this.screensize.width, this.screensize.height);
+        frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
+                (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
         frame.setResizable(false);
         frame.setVisible(true);
     }
@@ -42,15 +46,5 @@ public class GameFrame implements Runnable
     public static JFrame getFrame()
     {
         return frame;
-    }
-
-    public Dimension getScreensize()
-    {
-        return screensize;
-    }
-
-    public void setScreensize(int width, int height)
-    {
-        this.screensize.setSize(width, height);
     }
 }

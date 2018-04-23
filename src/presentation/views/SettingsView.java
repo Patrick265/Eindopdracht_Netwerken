@@ -1,17 +1,23 @@
 package presentation.views;
 
 import presentation.GameFrame;
+import presentation.template.Colors;
+import presentation.template.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Patrick de Jong
+ */
 public class SettingsView extends JPanel
 {
     private JComboBox<Dimension> resolutionPullDown;
     private List<Dimension> resolutionsformats;
     private JLabel resolutionLabel;
+    private JButton returnView;
 
     public SettingsView()
     {
@@ -22,16 +28,20 @@ public class SettingsView extends JPanel
         gbc.gridy = 0;
 
         gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.insets = new Insets(0,0,10,10);
-        //gbc.gridy++;
+        gbc.insets = new Insets(10,10,10,10);
+        gbc.gridy++;
         super.add(this.resolutionLabel, gbc);
         gbc.gridx++;
         super.add(this.resolutionPullDown, gbc);
+        gbc.gridy++;
+        super.add(this.returnView, gbc);
+
     }
 
     public void initialise()
     {
         this.resolutionLabel = new JLabel("Screen Resolution");
+        this.resolutionLabel.setFont(Fonts.settings());
         buildResolutions();
         String[] resolutions = new String[this.resolutionsformats.size()];
         for(int i = 0; i < this.resolutionsformats.size(); i++)
@@ -42,22 +52,35 @@ public class SettingsView extends JPanel
 
 
         this.resolutionPullDown = new JComboBox(resolutions);
+        this.resolutionPullDown.setFont(Fonts.settings());
 
         this.resolutionPullDown.addActionListener(e ->
         {
-            System.out.println(this.resolutionPullDown.getSelectedItem());
-            for(int i = 0; i < resolutions.length; i++)
+            int width = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(7,11));
+            int height;
+            if(this.resolutionPullDown.getSelectedItem().toString().substring(22).length() > 5)
             {
-                System.out.println(resolutions[i].substring(7,13));
-                int width = Integer.parseInt(resolutions[i].substring(7,13));
-                System.out.println(width);
-                if(resolutions[i].equals(this.resolutionsformats.get(i).width))
-                {
-                    GameFrame.getFrame().setSize(
-                                            this.resolutionsformats.get(i).width,
-                                            this.resolutionsformats.get(i).height);
-                }
+                height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 26));
             }
+            else
+            {
+                height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 25));
+            }
+            System.out.println("Width: " + width + " Height: " + height);
+                GameFrame.getFrame().setSize(width, height);
+        });
+
+        this.returnView = new JButton("Return");
+        this.returnView.setFont(Fonts.settings());
+        this.returnView.setPreferredSize(new Dimension(335,50));
+        this.returnView.setOpaque(false);
+        this.returnView.setFocusPainted(false);
+        this.returnView.setForeground(Colors.fontColor());
+        this.returnView.addActionListener(e ->
+        {
+            GameFrame.getFrame().getContentPane().removeAll();
+            GameFrame.getFrame().setContentPane(new IntroView());
+            GameFrame.getFrame().revalidate();
         });
     }
 
