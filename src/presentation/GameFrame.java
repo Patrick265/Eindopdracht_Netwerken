@@ -1,7 +1,6 @@
 package presentation;
 
 import presentation.views.IntroView;
-import presentation.views.SettingsView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +40,7 @@ public class GameFrame implements Runnable
                 (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
         frame.setResizable(false);
         frame.setVisible(true);
+
     }
 
     public static JFrame getFrame()

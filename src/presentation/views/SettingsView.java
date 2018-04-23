@@ -5,6 +5,7 @@ import presentation.template.Colors;
 import presentation.template.Fonts;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,9 +74,10 @@ public class SettingsView extends JPanel
         this.returnView = new JButton("Return");
         this.returnView.setFont(Fonts.settings());
         this.returnView.setPreferredSize(new Dimension(335,50));
-        this.returnView.setOpaque(false);
+        this.returnView.setOpaque(true);
         this.returnView.setFocusPainted(false);
-        this.returnView.setForeground(Colors.fontColor());
+        this.returnView.setBackground(Colors.buttonBackground());
+        this.returnView.setForeground(Colors.buttonFontColor());
         this.returnView.addActionListener(e ->
         {
             GameFrame.getFrame().getContentPane().removeAll();
