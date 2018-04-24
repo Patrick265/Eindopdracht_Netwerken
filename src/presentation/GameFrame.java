@@ -32,6 +32,7 @@ public class GameFrame implements Runnable
         this.mainPanel = new JPanel(new BorderLayout());
 
         mainPanel.add(new IntroView(), BorderLayout.CENTER);
+
         frame.setContentPane(mainPanel);
         frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
                         (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
@@ -40,6 +41,8 @@ public class GameFrame implements Runnable
                 (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.setFocusable(true);
+        frame.requestFocus();
 
     }
 

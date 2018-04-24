@@ -46,7 +46,11 @@ public class IntroView extends JPanel
         this.play.setForeground(Colors.buttonFontColor());
         this.play.setPreferredSize(this.buttonsize);
         this.play.setFocusPainted(false);
-        this.play.addActionListener(e -> GameFrame.getFrame().setContentPane(null));
+        this.play.addActionListener(e ->
+        {
+            GameFrame.getFrame().setContentPane(new Game());
+            GameFrame.getFrame().revalidate();
+        });
 
         this.settings = new JButton("Settings");
         this.settings.setOpaque(true);

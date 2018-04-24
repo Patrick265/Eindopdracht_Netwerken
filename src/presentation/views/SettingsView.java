@@ -1,12 +1,15 @@
 package presentation.views;
 
+import javafx.scene.input.KeyCode;
 import presentation.GameFrame;
 import presentation.template.Colors;
 import presentation.template.Fonts;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,8 @@ public class SettingsView extends JPanel
     public SettingsView()
     {
         super(new GridBagLayout());
+        super.requestFocusInWindow();
+        super.setFocusable(true);
         initialise();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -37,6 +42,32 @@ public class SettingsView extends JPanel
         gbc.gridy++;
         super.add(this.returnView, gbc);
 
+        super.addKeyListener(new KeyListener()
+        {
+
+            @Override
+            public void keyTyped(KeyEvent e)
+            {
+                System.out.println("keivet");
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                System.out.println("keivet");
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                {
+
+                    returnView.doClick();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+                System.out.println("keivet");
+            }
+        });
     }
 
     public void initialise()
@@ -45,10 +76,10 @@ public class SettingsView extends JPanel
         this.resolutionLabel.setFont(Fonts.settings());
         buildResolutions();
         String[] resolutions = new String[this.resolutionsformats.size()];
-        for(int i = 0; i < this.resolutionsformats.size(); i++)
+        for (int i = 0; i < this.resolutionsformats.size(); i++)
         {
             resolutions[i] = "Width: " + this.resolutionsformats.get(i).getWidth() +
-                            " Height: " + this.resolutionsformats.get(i).getHeight();
+                    " Height: " + this.resolutionsformats.get(i).getHeight();
         }
 
 
@@ -57,23 +88,22 @@ public class SettingsView extends JPanel
 
         this.resolutionPullDown.addActionListener(e ->
         {
-            int width = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(7,11));
+            int width = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(7, 11));
             int height;
-            if(this.resolutionPullDown.getSelectedItem().toString().substring(22).length() > 5)
+            if (this.resolutionPullDown.getSelectedItem().toString().substring(22).length() > 5)
             {
                 height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 26));
-            }
-            else
+            } else
             {
                 height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 25));
             }
             System.out.println("Width: " + width + " Height: " + height);
-                GameFrame.getFrame().setSize(width, height);
+            GameFrame.getFrame().setSize(width, height);
         });
 
         this.returnView = new JButton("Return");
         this.returnView.setFont(Fonts.settings());
-        this.returnView.setPreferredSize(new Dimension(335,50));
+        this.returnView.setPreferredSize(new Dimension(335, 50));
         this.returnView.setOpaque(true);
         this.returnView.setFocusPainted(false);
         this.returnView.setBackground(Colors.buttonBackground());
