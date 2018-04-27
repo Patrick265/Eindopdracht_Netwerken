@@ -1,5 +1,6 @@
 package presentation;
 
+import Game.GameDrawer;
 import presentation.views.IntroView;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ public class GameFrame implements Runnable
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.mainPanel = new JPanel(new BorderLayout());
 
-        mainPanel.add(new IntroView(), BorderLayout.CENTER);
+        mainPanel.add(new GameDrawer(), BorderLayout.CENTER);
 
         frame.setContentPane(mainPanel);
         frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),

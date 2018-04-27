@@ -17,11 +17,12 @@ public class TiledLayer {
     private int[][] indices;
     private BufferedImage image;
 
-    public TiledLayer(String fileName, int layer){
+    public TiledLayer(String fileName, int layer)
+    {
         try {
+
             JsonReader reader = Json.createReader(getClass().getResourceAsStream(fileName));
             JsonObject root = reader.readObject();
-
             height = root.getJsonArray("layers").getJsonObject(0).getInt("height");
             width = root.getJsonArray("layers").getJsonObject(0).getInt("width");
 
@@ -62,20 +63,6 @@ public class TiledLayer {
     {
         BufferedImage img = new BufferedImage(32*width, 32*height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
-
-        for(int y = 0; y < height; y++)
-        {
-            for(int x = 0; x < width; x++)
-            {
-                int tileIndex = indices[y][x];
-                if(tileIndex <= map.getTiledSize().size() && tileIndex > 0)
-                {
-                    AffineTransform tx = new AffineTransform();
-                    tx.translate(x*32, y*32);
-                    g2.drawImage(map.getTiledSize().get(tileIndex).tile, tx, null);
-                }
-            }
-        }
         return img;
     }
 

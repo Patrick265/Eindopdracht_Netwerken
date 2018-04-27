@@ -1,5 +1,6 @@
 package presentation.views;
 
+import Game.GameDrawer;
 import presentation.GameFrame;
 import presentation.template.Colors;
 import presentation.template.Fonts;
@@ -48,7 +49,7 @@ public class IntroView extends JPanel
         this.play.setFocusPainted(false);
         this.play.addActionListener(e ->
         {
-            GameFrame.getFrame().setContentPane(new Game());
+            GameFrame.getFrame().setContentPane(new GameDrawer());
             GameFrame.getFrame().revalidate();
         });
 
