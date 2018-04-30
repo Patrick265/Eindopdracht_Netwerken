@@ -18,6 +18,7 @@ public class TiledMap extends JPanel {
     private int height;
     private int width;
 
+    private ArrayList<TiledTile> tiles = new ArrayList<>();
     private ArrayList<TiledLayer> layers = new ArrayList<>();
 
     public TiledMap(String filename)
@@ -31,8 +32,8 @@ public class TiledMap extends JPanel {
             JsonArray tilesets = objectReader.getJsonArray("tilesets");
 
             BufferedImage image = ImageIO.read(new FileInputStream("res/map/tilesheet.png"));
-            height = image.getHeight() / 32;
-            width = image.getWidth() / 32;
+            height = image.getHeight() / 64;
+            width = image.getWidth() / 64;
 
             for (int i = 0; i < tilesets.size(); i++)
             {
@@ -42,6 +43,19 @@ public class TiledMap extends JPanel {
                 int tileHeight = objectReader.getInt("tileheight");
                 int index = tileset.getInt("firstgid");
 
+                while(tiles.size() < index + (height * width)) {
+                    tiles.add(new TiledTile());
+                }
+
+                for(int y = 0; y < image.getHeight(); y+= tileHeight)
+                {
+                    for(int x = 0; x < image.getWidth(); x += tileWidth)
+                    {
+                        tiles.get(index).tile = image.getSubimage(64*(x/tileWidth), 64 *(y/tileHeight), 64, 64);
+                        index++;
+                    }
+                }
+
             }
         } catch (IOException e1)
         {
@@ -49,15 +63,11 @@ public class TiledMap extends JPanel {
         }
 
         JsonArray jsonLayers = objectReader.getJsonArray("layers");
-        JsonArray jsontarget = null;
         for (int i = 0; i < jsonLayers.size(); i++)
         {
             if (jsonLayers.getJsonObject(i).getString("type").equals("tilelayer"))
             {
                 layers.add(new TiledLayer(jsonLayers.getJsonObject(i), this));
-            } else if (jsonLayers.getJsonObject(i).getString("type").equals("objectgroup"))
-            {
-                jsontarget = jsonLayers.getJsonObject(i).getJsonArray("objects");
             }
         }
 
@@ -65,10 +75,6 @@ public class TiledMap extends JPanel {
 
     public void debugDraw(Graphics2D g2d, AffineTransform tx)
     {
-        for(int i = 0; i < layers.size(); i++)
-        {
-            System.out.println(layers.get(i).getData());
-        }
         for (TiledLayer l : layers)
         {
             if (l.isVisible())
@@ -76,4 +82,21 @@ public class TiledMap extends JPanel {
         }
     }
 
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    public ArrayList<TiledTile> getTiles() {
+        return tiles;
+    }
+
+    public ArrayList<TiledLayer> getLayers() {
+        return layers;
+    }
 }
