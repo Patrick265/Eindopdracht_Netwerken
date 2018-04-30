@@ -1,6 +1,6 @@
 package presentation;
 
-import Game.GameDrawer;
+import game.GameDrawer;
 import presentation.views.IntroView;
 
 import javax.swing.*;
@@ -17,12 +17,6 @@ public class GameFrame implements Runnable
     {
         this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
         this.gameName = gameName;
-    }
-
-    public GameFrame()
-    {
-        this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.gameName = "";
     }
 
     @Override

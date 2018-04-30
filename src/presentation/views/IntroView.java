@@ -1,6 +1,6 @@
 package presentation.views;
 
-import Game.GameDrawer;
+import game.GameDrawer;
 import presentation.GameFrame;
 import presentation.template.Colors;
 import presentation.template.Fonts;

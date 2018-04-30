@@ -1,4 +1,4 @@
-package Game.Map;
+package game.map;
 
 import javax.json.Json;
 import javax.json.JsonArray;
