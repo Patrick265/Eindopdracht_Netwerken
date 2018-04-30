@@ -1,8 +1,6 @@
 package presentation;
 
 import game.GameDrawer;
-import presentation.views.IntroView;
-
 import javax.swing.*;
 import java.awt.*;
 

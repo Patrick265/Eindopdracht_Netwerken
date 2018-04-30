@@ -1,9 +1,7 @@
 package game.map;
 
-import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonReader;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -39,7 +37,7 @@ public class TiledLayer {
 
     public BufferedImage createImage()
     {
-        BufferedImage img = new BufferedImage(64*width, 64*height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage img = new BufferedImage(64*width, 64*height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = img.createGraphics();
         for(int y = 0; y < height; y++)
         {
@@ -61,35 +59,12 @@ public class TiledLayer {
 
     public BufferedImage getImage() {return image; }
 
-    public void updateImage() {
-        image = createImage();
-    }
-
-    public JsonArray getData() {
-        return data;
-    }
-
-    public void setData(JsonArray data) {
-        this.data = data;
-    }
-
     public int getHeight() {
         return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int[][] getIndices() {
-        return indices;
-    }
 }

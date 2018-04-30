@@ -11,15 +11,18 @@ public class GameDrawer extends JPanel
 {
     Player player;
 
+    public GameDrawer()
+    {
+        player = new Player(new Point(0,0),"Frankie");
+    }
+
     @Override
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        player =  new Player(new Point(0,0),"gay");
-        AffineTransform tx = new AffineTransform();
         TiledMap map = new TiledMap("res/map/map.json");
-        map.debugDraw(g2d, tx);
+        map.debugDraw(g2d);
         player.drawPlayer(g2d);
     }
 }
