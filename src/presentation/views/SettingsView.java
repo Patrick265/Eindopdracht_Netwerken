@@ -22,6 +22,7 @@ public class SettingsView extends JPanel
     private List<Dimension> resolutionsformats;
     private JLabel resolutionLabel;
     private JButton returnView;
+    private static List<String> usersettings;
 
     public SettingsView()
     {
@@ -42,36 +43,11 @@ public class SettingsView extends JPanel
         gbc.gridy++;
         super.add(this.returnView, gbc);
 
-        super.addKeyListener(new KeyListener()
-        {
-
-            @Override
-            public void keyTyped(KeyEvent e)
-            {
-                System.out.println("keivet");
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e)
-            {
-                System.out.println("keivet");
-                if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-                {
-
-                    returnView.doClick();
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e)
-            {
-                System.out.println("keivet");
-            }
-        });
     }
 
     public void initialise()
     {
+        usersettings = new ArrayList<>();
         this.resolutionLabel = new JLabel("Screen Resolution");
         this.resolutionLabel.setFont(Fonts.settings());
         buildResolutions();
@@ -99,6 +75,9 @@ public class SettingsView extends JPanel
             }
             System.out.println("Width: " + width + " Height: " + height);
             GameFrame.getFrame().setSize(width, height);
+            usersettings.clear();
+            usersettings.add(width + "," + height);
+            System.out.println(usersettings.toString());
         });
 
         this.returnView = new JButton("Return");
@@ -123,5 +102,10 @@ public class SettingsView extends JPanel
         this.resolutionsformats.add(new Dimension(1600,900));
         this.resolutionsformats.add(new Dimension(1280,720));
         this.resolutionsformats.add(new Dimension(1024,576));
+    }
+
+    public static List<String> getUsersettings()
+    {
+        return usersettings;
     }
 }

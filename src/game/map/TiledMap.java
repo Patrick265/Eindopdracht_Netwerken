@@ -1,4 +1,4 @@
-package Game.Map;
+package game.map;
 
 import javax.imageio.ImageIO;
 import javax.json.Json;
@@ -8,7 +8,6 @@ import javax.json.JsonReader;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
