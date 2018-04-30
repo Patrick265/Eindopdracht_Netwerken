@@ -1,4 +1,4 @@
-package Game.Map;
+package game.map;
 
 import java.awt.image.BufferedImage;
 

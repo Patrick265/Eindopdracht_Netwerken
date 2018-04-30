@@ -1,6 +1,6 @@
 package presentation;
 
-import Game.GameDrawer;
+import game.GameDrawer;
 import presentation.views.IntroView;
 
 import javax.swing.*;
@@ -19,12 +19,6 @@ public class GameFrame implements Runnable
         this.gameName = gameName;
     }
 
-    public GameFrame()
-    {
-        this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.gameName = "";
-    }
-
     @Override
     public void run()
     {
@@ -35,11 +29,11 @@ public class GameFrame implements Runnable
         mainPanel.add(new GameDrawer(), BorderLayout.CENTER);
 
         frame.setContentPane(mainPanel);
-        frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
-                        (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
+        frame.setLocation(  (int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
+                            (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
         frame.setSize(this.screensize.width, this.screensize.height);
-        frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
-                (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
+        frame.setLocation(  (int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
+                            (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setFocusable(true);

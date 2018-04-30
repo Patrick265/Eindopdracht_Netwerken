@@ -1,8 +1,7 @@
-package Game;
+package game;
 
-import Game.Map.TiledLayer;
-import Game.Map.TiledMap;
-import presentation.GameFrame;
+
+import game.map.TiledMap;
 
 import javax.swing.*;
 import java.awt.*;
