@@ -1,7 +1,7 @@
 package presentation;
 
+import Game.GameDrawer;
 import presentation.views.IntroView;
-import presentation.views.SettingsView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,25 +32,23 @@ public class GameFrame implements Runnable
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.mainPanel = new JPanel(new BorderLayout());
 
-        mainPanel.add(new SettingsView(), BorderLayout.CENTER);
+        mainPanel.add(new GameDrawer(), BorderLayout.CENTER);
+
         frame.setContentPane(mainPanel);
+        frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
+                        (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
         frame.setSize(this.screensize.width, this.screensize.height);
+        frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
+                (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
         frame.setResizable(false);
         frame.setVisible(true);
+        frame.setFocusable(true);
+        frame.requestFocus();
+
     }
 
     public static JFrame getFrame()
     {
         return frame;
-    }
-
-    public Dimension getScreensize()
-    {
-        return screensize;
-    }
-
-    public void setScreensize(int width, int height)
-    {
-        this.screensize.setSize(width, height);
     }
 }

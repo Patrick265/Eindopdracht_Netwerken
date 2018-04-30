@@ -1,4 +1,5 @@
 import presentation.GameFrame;
+import presentation.template.Colors;
 
 import javax.swing.*;
 

@@ -1,63 +1,118 @@
 package presentation.views;
 
+import javafx.scene.input.KeyCode;
 import presentation.GameFrame;
+import presentation.template.Colors;
+import presentation.template.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Patrick de Jong
+ */
 public class SettingsView extends JPanel
 {
     private JComboBox<Dimension> resolutionPullDown;
     private List<Dimension> resolutionsformats;
     private JLabel resolutionLabel;
+    private JButton returnView;
 
     public SettingsView()
     {
         super(new GridBagLayout());
+        super.requestFocusInWindow();
+        super.setFocusable(true);
         initialise();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
 
         gbc.fill = GridBagConstraints.VERTICAL;
-        gbc.insets = new Insets(0,0,10,10);
-        //gbc.gridy++;
+        gbc.insets = new Insets(10,10,10,10);
+        gbc.gridy++;
         super.add(this.resolutionLabel, gbc);
         gbc.gridx++;
         super.add(this.resolutionPullDown, gbc);
+        gbc.gridy++;
+        super.add(this.returnView, gbc);
+
+        super.addKeyListener(new KeyListener()
+        {
+
+            @Override
+            public void keyTyped(KeyEvent e)
+            {
+                System.out.println("keivet");
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                System.out.println("keivet");
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                {
+
+                    returnView.doClick();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e)
+            {
+                System.out.println("keivet");
+            }
+        });
     }
 
     public void initialise()
     {
         this.resolutionLabel = new JLabel("Screen Resolution");
+        this.resolutionLabel.setFont(Fonts.settings());
         buildResolutions();
         String[] resolutions = new String[this.resolutionsformats.size()];
-        for(int i = 0; i < this.resolutionsformats.size(); i++)
+        for (int i = 0; i < this.resolutionsformats.size(); i++)
         {
             resolutions[i] = "Width: " + this.resolutionsformats.get(i).getWidth() +
-                            " Height: " + this.resolutionsformats.get(i).getHeight();
+                    " Height: " + this.resolutionsformats.get(i).getHeight();
         }
 
 
         this.resolutionPullDown = new JComboBox(resolutions);
+        this.resolutionPullDown.setFont(Fonts.settings());
 
         this.resolutionPullDown.addActionListener(e ->
         {
-            System.out.println(this.resolutionPullDown.getSelectedItem());
-            for(int i = 0; i < resolutions.length; i++)
+            int width = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(7, 11));
+            int height;
+            if (this.resolutionPullDown.getSelectedItem().toString().substring(22).length() > 5)
             {
-                System.out.println(resolutions[i].substring(7,13));
-                int width = Integer.parseInt(resolutions[i].substring(7,13));
-                System.out.println(width);
-                if(resolutions[i].equals(this.resolutionsformats.get(i).width))
-                {
-                    GameFrame.getFrame().setSize(
-                                            this.resolutionsformats.get(i).width,
-                                            this.resolutionsformats.get(i).height);
-                }
+                height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 26));
+            } else
+            {
+                height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 25));
             }
+            System.out.println("Width: " + width + " Height: " + height);
+            GameFrame.getFrame().setSize(width, height);
+        });
+
+        this.returnView = new JButton("Return");
+        this.returnView.setFont(Fonts.settings());
+        this.returnView.setPreferredSize(new Dimension(335, 50));
+        this.returnView.setOpaque(true);
+        this.returnView.setFocusPainted(false);
+        this.returnView.setBackground(Colors.buttonBackground());
+        this.returnView.setForeground(Colors.buttonFontColor());
+        this.returnView.addActionListener(e ->
+        {
+            GameFrame.getFrame().getContentPane().removeAll();
+            GameFrame.getFrame().setContentPane(new IntroView());
+            GameFrame.getFrame().revalidate();
         });
     }
 

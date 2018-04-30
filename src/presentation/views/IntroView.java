@@ -1,13 +1,12 @@
 package presentation.views;
 
+import Game.GameDrawer;
 import presentation.GameFrame;
 import presentation.template.Colors;
 import presentation.template.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class IntroView extends JPanel
 {
@@ -29,7 +28,6 @@ public class IntroView extends JPanel
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.insets = new Insets(0,0,10,10);
         gbc.gridy++;
-        gbc.ipady = 5;
         super.add(this.play, gbc);
         gbc.gridy++;
         super.add(this.settings, gbc);
@@ -43,25 +41,38 @@ public class IntroView extends JPanel
     {
         this.buttonsize = new Dimension(400,50);
         this.play = new JButton("Play");
+        this.play.setOpaque(true);
+        this.play.setBackground(Colors.buttonBackground());
         this.play.setFont(Fonts.introScreenButtons());
-        this.play.setForeground(Colors.fontColor());
+        this.play.setForeground(Colors.buttonFontColor());
         this.play.setPreferredSize(this.buttonsize);
-        this.play.setOpaque(false);
         this.play.setFocusPainted(false);
+        this.play.addActionListener(e ->
+        {
+            GameFrame.getFrame().setContentPane(new GameDrawer());
+            GameFrame.getFrame().revalidate();
+        });
 
         this.settings = new JButton("Settings");
+        this.settings.setOpaque(true);
+        this.settings.setBackground(Colors.buttonBackground());
         this.settings.setFont(Fonts.introScreenButtons());
         this.settings.setPreferredSize(this.buttonsize);
-        this.settings.setOpaque(false);
         this.settings.setFocusPainted(false);
-        this.settings.setForeground(Colors.fontColor());
+        this.settings.setForeground(Colors.buttonFontColor());
+        this.settings.addActionListener(e ->
+        {
+            GameFrame.getFrame().setContentPane(new SettingsView());
+            GameFrame.getFrame().revalidate();
+        });
 
         this.exit = new JButton("Exit");
+        this.exit.setOpaque(true);
+        this.exit.setBackground(Colors.buttonBackground());
         this.exit.setFont(Fonts.introScreenButtons());
         this.exit.setPreferredSize(this.buttonsize);
-        this.exit.setOpaque(false);
         this.exit.setFocusPainted(false);
-        this.exit.setForeground(Colors.fontColor());
+        this.exit.setForeground(Colors.buttonFontColor());
         this.exit.addActionListener(e -> GameFrame.getFrame().dispose());
     }
 }
