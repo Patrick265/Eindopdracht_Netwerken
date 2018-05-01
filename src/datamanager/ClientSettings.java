@@ -77,6 +77,39 @@ public class ClientSettings
                 new File(String.valueOf(dataPath + "/client/")).mkdir();
             }
         }
+
+        //Check for Windows 10
+        if(systemOS.toLowerCase().equals(ostypes[1].toLowerCase()))
+        {
+            Path dataPath = Paths.get(paths.get(ostypes[1].toLowerCase()));
+            if(Files.exists(dataPath))
+            {
+                System.out.println("Looking for settingsFile file");
+            } else {
+                //Creating Main Folder
+                new File(String.valueOf(dataPath)).mkdir();
+
+            }
+            Path clientPath = Paths.get(dataPath + "/client/");
+            if(Files.exists(clientPath))
+            {
+                System.out.println("Searching for client settingsFile");
+                boolean settingsFileCheck = new File(clientPath + "/config.properties").exists();
+                if(settingsFileCheck)
+                {
+                    System.out.println("Found settings file");
+                    settingsFile = new File(clientPath + "/config.properties");
+                }
+                else {
+                    System.out.println("Creating a new settings file");
+                    settingsFile = new File(clientPath + "/config.properties");
+                    settingsFile.createNewFile();
+                }
+            } else {
+                System.out.println("Creating folder for client settingsFile");
+                new File(String.valueOf(dataPath + "/client/")).mkdir();
+            }
+        }
     }
 
 
