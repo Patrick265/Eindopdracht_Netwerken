@@ -1,5 +1,6 @@
 package presentation.views;
 
+import datamanager.ClientSettings;
 import javafx.scene.input.KeyCode;
 import presentation.GameFrame;
 import presentation.template.Colors;
@@ -10,8 +11,11 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Patrick de Jong
@@ -22,7 +26,7 @@ public class SettingsView extends JPanel
     private List<Dimension> resolutionsformats;
     private JLabel resolutionLabel;
     private JButton returnView;
-    private static List<String> usersettings;
+
 
     public SettingsView()
     {
@@ -47,7 +51,6 @@ public class SettingsView extends JPanel
 
     public void initialise()
     {
-        usersettings = new ArrayList<>();
         this.resolutionLabel = new JLabel("Screen Resolution");
         this.resolutionLabel.setFont(Fonts.settings());
         buildResolutions();
@@ -61,6 +64,15 @@ public class SettingsView extends JPanel
 
         this.resolutionPullDown = new JComboBox(resolutions);
         this.resolutionPullDown.setFont(Fonts.settings());
+        String widthProperty = ClientSettings.getClientProperties().getProperty("width");
+        System.out.println(widthProperty);
+        System.out.println(this.resolutionPullDown.getSelectedItem());
+
+        for(Object entry : this.resolutionPullDown.getComponents())
+        {
+            System.out.println("Entry: " + entry.toString());
+            //if()
+        }
 
         this.resolutionPullDown.addActionListener(e ->
         {
@@ -73,11 +85,16 @@ public class SettingsView extends JPanel
             {
                 height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 25));
             }
-            System.out.println("Width: " + width + " Height: " + height);
             GameFrame.getFrame().setSize(width, height);
-            usersettings.clear();
-            usersettings.add(width + "," + height);
-            System.out.println(usersettings.toString());
+            ClientSettings.getClientProperties().put("width", String.valueOf(width));
+            ClientSettings.getClientProperties().put("height", String.valueOf(height));
+            try
+            {
+                ClientSettings.write();
+            } catch (IOException e1)
+            {
+                e1.printStackTrace();
+            }
         });
 
         this.returnView = new JButton("Return");
@@ -102,10 +119,5 @@ public class SettingsView extends JPanel
         this.resolutionsformats.add(new Dimension(1600,900));
         this.resolutionsformats.add(new Dimension(1280,720));
         this.resolutionsformats.add(new Dimension(1024,576));
-    }
-
-    public static List<String> getUsersettings()
-    {
-        return usersettings;
     }
 }

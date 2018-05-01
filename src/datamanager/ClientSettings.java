@@ -1,11 +1,6 @@
 package datamanager;
 
-import jdk.nashorn.internal.ir.WhileNode;
-import presentation.views.SettingsView;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,37 +14,41 @@ public class ClientSettings
 {
 
     //This works only for Linux and Windows 10
-    private String systemOS;
-    private String userNameOS;
-    private Map<String, String> paths;
-    private File settingsFile;
-    private List<String> settings;
+    private final static String systemOS = System.getProperty("os.name");
+    private final static String userNameOS = System.getProperty("user.name");;
+
+    //Settings File
+    private static File settingsFile;
+
+    private static Map<String, String> paths;
+    private static Map<String, String> settings;
+
+    //Storing settings.
+    private static Properties clientProperties;
 
     //Need more like OS X and Windows 7/8
-    private String[] ostypes = {"Linux", "Windows 10"};
+    private static String[] ostypes;
 
     public ClientSettings()
     {
-        //This is for getting the os type
-        this.systemOS = System.getProperty("os.name");
-
-        //For saving path
-        this.userNameOS = System.getProperty("user.name");
-
-        this.paths = new HashMap<>();
+        paths = new HashMap<>();
         createpaths();
-
-        this.settings = new ArrayList<>();
+        settings = new HashMap<>();
+        clientProperties = new Properties();
     }
 
 
-    //Check's if the folder exits
-    public void check() throws IOException
+    /**
+     * This class check if the clientsettings file exists.
+     * @throws IOException If the file cannot be found
+     */
+    public static void check() throws IOException
     {
+
         //Check for linux
-        if(this.systemOS.toLowerCase().equals(this.ostypes[0].toLowerCase()))
+        if(systemOS.toLowerCase().equals(ostypes[0].toLowerCase()))
         {
-            Path dataPath = Paths.get(this.paths.get(this.ostypes[0].toLowerCase()));
+            Path dataPath = Paths.get(paths.get(ostypes[0].toLowerCase()));
             if(Files.exists(dataPath))
             {
                 System.out.println("Looking for settingsFile file");
@@ -62,16 +61,16 @@ public class ClientSettings
             if(Files.exists(clientPath))
             {
                 System.out.println("Searching for client settingsFile");
-                boolean settingsFileCheck = new File(clientPath + "/settings.txt").exists();
+                boolean settingsFileCheck = new File(clientPath + "/config.properties").exists();
                 if(settingsFileCheck)
                 {
                     System.out.println("Found settings file");
-                    this.settingsFile = new File(clientPath + "/settings.txt");
+                    settingsFile = new File(clientPath + "/config.properties");
                 }
                 else {
                     System.out.println("Creating a new settings file");
-                    this.settingsFile = new File(clientPath + "/settings.txt");
-                    this.settingsFile.createNewFile();
+                    settingsFile = new File(clientPath + "/config.properties");
+                    settingsFile.createNewFile();
                 }
             } else {
                 System.out.println("Creating folder for client settingsFile");
@@ -80,41 +79,37 @@ public class ClientSettings
         }
     }
 
+
     /**
      * Writing all of the settings to the file
      * @throws IOException When the file is not found
      */
-    public void write() throws IOException
+    public static void write() throws IOException
     {
+        FileOutputStream outputStream = new FileOutputStream(settingsFile);
+        clientProperties.store(outputStream, null);
 
-        check();
-        if(this.settings.size() > 0)
-        {
-            FileWriter writer = new FileWriter(this.settingsFile);
-            {
-                writer.write("");
-                for(int i = 0; i < this.settings.size(); i++)
-                {
-                    System.out.println(this.settings.get(i));
-                    writer.write(this.settings.get(i));
-                }
-            }
-            //Mandatory!!!
-            writer.close();
+    }
+
+    public static void read() throws IOException
+    {
+        FileInputStream inputStream = new FileInputStream(settingsFile);
+        clientProperties.load(inputStream);
+
+        Enumeration<?> e = clientProperties.propertyNames();
+        while (e.hasMoreElements()) {
+            String key = (String) e.nextElement();
+            String value = clientProperties.getProperty(key);
         }
     }
 
-    public void read() throws IOException
+
+    public void readList(Map<String, String> settings)
     {
-        check();
-        Scanner scanner = new Scanner(this.settingsFile);
-        while (scanner.hasNext())
+        for(Map.Entry<String, String> entry : settings.entrySet())
         {
-            scanner.nextLine();
-
+            clientProperties.setProperty(entry.getKey(), entry.getValue().toLowerCase());
         }
-        scanner.close();
-
     }
 
     /**
@@ -128,18 +123,32 @@ public class ClientSettings
 
     /**
      * Retrieves the system you are using.
-     * @return
+     * @return returns the OS the user is using.
      */
     public String getSystemOS()
     {
         return systemOS;
     }
 
-    public void createpaths()
+    /**
+     * Creates the paths needed for every type of OS we support.
+     */
+    public static void createpaths()
     {
+        ostypes = new String[]{"Linux", "Windows 10"};
         //linux
-        this.paths.put(this.ostypes[0].toLowerCase(), "/home/" + this.userNameOS + "/Documents/TreacherousMUD/");
+        paths.put(ostypes[0].toLowerCase(), "/home/" + userNameOS + "/Documents/TreacherousMUD/");
         //Windows10
-        this.paths.put(this.ostypes[1].toLowerCase(), "C:/Users/" + this.userNameOS + "/Documents/TreacherousMUD/");
+        paths.put(ostypes[1].toLowerCase(), "C:/Users/" + userNameOS + "/Documents/TreacherousMUD/");
+    }
+
+    public static Properties getClientProperties()
+    {
+        return clientProperties;
+    }
+
+    public static File getSettingsFile()
+    {
+        return settingsFile;
     }
 }

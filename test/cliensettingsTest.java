@@ -34,7 +34,6 @@ public class cliensettingsTest
     @Test
     public void write()
     {
-        clientSettings.addSetting();
         try
         {
             clientSettings.write();
