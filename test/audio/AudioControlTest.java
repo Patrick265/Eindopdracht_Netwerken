@@ -15,26 +15,20 @@ class AudioControlTest
 
     public AudioControlTest()
     {
-        this.audioControl = new AudioControl();
+        this.audioControl = new AudioControl("res/audio/test_audio.wav");
     }
 
     @Test
     void checkdevices()
     {
-        audioControl.checkdevices();
+     //   audioControl.checkdevices();
     }
 
     @Test
     void play()
     {
-
-        try
-        {
-            audioControl.playAudio("res/audio/test_audio.wav");
-        } catch (LineUnavailableException | IOException | InterruptedException | UnsupportedAudioFileException e)
-        {
-            e.printStackTrace();
-        }
+        audioControl.run();
+        audioControl.changeVolume(-10f);
 
     }
 
