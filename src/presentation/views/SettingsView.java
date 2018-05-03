@@ -64,16 +64,6 @@ public class SettingsView extends JPanel
 
         this.resolutionPullDown = new JComboBox(resolutions);
         this.resolutionPullDown.setFont(Fonts.settings());
-        String widthProperty = ClientSettings.getClientProperties().getProperty("width");
-        System.out.println(widthProperty);
-        System.out.println(this.resolutionPullDown.getSelectedItem());
-
-        for(Object entry : this.resolutionPullDown.getComponents())
-        {
-            System.out.println("Entry: " + entry.toString());
-            //if()
-        }
-
         this.resolutionPullDown.addActionListener(e ->
         {
             int width = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(7, 11));
