@@ -15,7 +15,7 @@ class AudioControlTest
 
     public AudioControlTest()
     {
-        this.audioControl = new AudioControl("res/audio/test_audio.wav");
+        this.audioControl = new AudioControl("res/audio/background.wav");
     }
 
     @Test
@@ -28,8 +28,6 @@ class AudioControlTest
     void play()
     {
         audioControl.run();
-        audioControl.changeVolume(-10f);
-
     }
 
 }

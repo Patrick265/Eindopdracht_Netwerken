@@ -1,5 +1,6 @@
 package launcher;
 
+import audio.AudioControl;
 import presentation.GameFrame;
 import presentation.template.Colors;
 
@@ -21,7 +22,13 @@ public class Main
             e.printStackTrace();
         }
         Runnable frame = new GameFrame("TreacherousMUD");
+        Runnable audio = new AudioControl("res/audio/background.wav");
+
+
         Thread frameThread = new Thread(frame);
+        Thread audioThread = new Thread(audio);
+
         frameThread.start();
+        audioThread.start();
     }
 }
