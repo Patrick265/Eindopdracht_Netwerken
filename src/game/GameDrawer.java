@@ -1,5 +1,9 @@
 package game;
 
+<<<<<<< HEAD:src/Game/GameDrawer.java
+
+=======
+>>>>>>> audio:src/game/GameDrawer.java
 import game.map.TiledMap;
 
 import javax.swing.*;

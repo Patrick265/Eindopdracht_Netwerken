@@ -53,7 +53,7 @@ public class ClientSettings
             {
                 System.out.println("Looking for settingsFile file");
             } else {
-                //Creating Main Folder
+                //Creating launcher.Main Folder
                 new File(String.valueOf(dataPath)).mkdir();
 
             }
@@ -86,7 +86,7 @@ public class ClientSettings
             {
                 System.out.println("Looking for settingsFile file");
             } else {
-                //Creating Main Folder
+                //Creating launcher.Main Folder
                 new File(String.valueOf(dataPath)).mkdir();
 
             }
