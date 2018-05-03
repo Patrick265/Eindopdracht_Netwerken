@@ -1,5 +1,6 @@
 package presentation.views;
 
+import datamanager.ClientSettings;
 import javafx.scene.input.KeyCode;
 import presentation.GameFrame;
 import presentation.template.Colors;
@@ -10,8 +11,11 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Patrick de Jong
@@ -22,6 +26,7 @@ public class SettingsView extends JPanel
     private List<Dimension> resolutionsformats;
     private JLabel resolutionLabel;
     private JButton returnView;
+
 
     public SettingsView()
     {
@@ -42,32 +47,6 @@ public class SettingsView extends JPanel
         gbc.gridy++;
         super.add(this.returnView, gbc);
 
-        super.addKeyListener(new KeyListener()
-        {
-
-            @Override
-            public void keyTyped(KeyEvent e)
-            {
-                System.out.println("keivet");
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e)
-            {
-                System.out.println("keivet");
-                if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-                {
-
-                    returnView.doClick();
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e)
-            {
-                System.out.println("keivet");
-            }
-        });
     }
 
     public void initialise()
@@ -85,6 +64,15 @@ public class SettingsView extends JPanel
 
         this.resolutionPullDown = new JComboBox(resolutions);
         this.resolutionPullDown.setFont(Fonts.settings());
+        String widthProperty = ClientSettings.getClientProperties().getProperty("width");
+        System.out.println(widthProperty);
+        System.out.println(this.resolutionPullDown.getSelectedItem());
+
+        for(Object entry : this.resolutionPullDown.getComponents())
+        {
+            System.out.println("Entry: " + entry.toString());
+            //if()
+        }
 
         this.resolutionPullDown.addActionListener(e ->
         {
@@ -97,8 +85,16 @@ public class SettingsView extends JPanel
             {
                 height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 25));
             }
-            System.out.println("Width: " + width + " Height: " + height);
             GameFrame.getFrame().setSize(width, height);
+            ClientSettings.getClientProperties().put("width", String.valueOf(width));
+            ClientSettings.getClientProperties().put("height", String.valueOf(height));
+            try
+            {
+                ClientSettings.write();
+            } catch (IOException e1)
+            {
+                e1.printStackTrace();
+            }
         });
 
         this.returnView = new JButton("Return");
