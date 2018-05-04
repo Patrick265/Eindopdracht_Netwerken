@@ -1,5 +1,7 @@
 package datamanager;
 
+import presentation.GameFrame;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,28 +15,49 @@ import java.util.*;
 public class ClientSettings
 {
 
+    private static ClientSettings instance = null;
+
     //This works only for Linux and Windows 10
-    private final static String systemOS = System.getProperty("os.name");
-    private final static String userNameOS = System.getProperty("user.name");;
+    private final String systemOS = System.getProperty("os.name");
+    private final String userNameOS = System.getProperty("user.name");;
 
     //Settings File
-    private static File settingsFile;
+    private File settingsFile;
 
-    private static Map<String, String> paths;
-    private static Map<String, String> settings;
+    private Map<String, String> paths;
+    private Map<String, String> settings;
 
     //Storing settings.
-    private static Properties clientProperties;
+    private Properties clientProperties;
 
     //Need more like OS X and Windows 7/8
-    private static String[] ostypes;
+    private String[] ostypes;
 
-    public ClientSettings()
+    private ClientSettings()
     {
         paths = new HashMap<>();
         createpaths();
         settings = new HashMap<>();
         clientProperties = new Properties();
+        try
+        {
+            check();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public static ClientSettings getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new ClientSettings();
+        }
+
+        return instance;
     }
 
 
@@ -42,7 +65,7 @@ public class ClientSettings
      * This class check if the clientsettings file exists.
      * @throws IOException If the file cannot be found
      */
-    public static void check() throws IOException
+    public void check() throws IOException
     {
 
         //Check for linux
@@ -117,32 +140,34 @@ public class ClientSettings
      * Writing all of the settings to the file
      * @throws IOException When the file is not found
      */
-    public static void write() throws IOException
+    public void write() throws IOException
     {
         FileOutputStream outputStream = new FileOutputStream(settingsFile);
         clientProperties.store(outputStream, null);
 
     }
 
-    public static void read() throws IOException
+    /**
+     * Builds a standard setting scenario for first time launch
+     */
+    public void setup() throws IOException
     {
-        FileInputStream inputStream = new FileInputStream(settingsFile);
-        clientProperties.load(inputStream);
-
-        Enumeration<?> e = clientProperties.propertyNames();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            String value = clientProperties.getProperty(key);
-        }
+        GameFrame gameFrame = new GameFrame();
+        clientProperties.put("width", String.valueOf(gameFrame.getScreenSize().width));
+        clientProperties.put("height", String.valueOf(gameFrame.getScreenSize().height));
+        clientProperties.put("audio", String.valueOf(true));
+        write();
     }
 
 
-    public void readList(Map<String, String> settings)
+    /**
+     * Reads the properties file
+     * @throws IOException if file cannot be found.
+     */
+    public void read() throws IOException
     {
-        for(Map.Entry<String, String> entry : settings.entrySet())
-        {
-            clientProperties.setProperty(entry.getKey(), entry.getValue().toLowerCase());
-        }
+        FileInputStream inputStream = new FileInputStream(settingsFile);
+        clientProperties.load(inputStream);
     }
 
     /**
@@ -166,7 +191,7 @@ public class ClientSettings
     /**
      * Creates the paths needed for every type of OS we support.
      */
-    public static void createpaths()
+    public void createpaths()
     {
         ostypes = new String[]{"Linux", "Windows 10"};
         //linux
@@ -175,12 +200,12 @@ public class ClientSettings
         paths.put(ostypes[1].toLowerCase(), "C:/Users/" + userNameOS + "/Documents/TreacherousMUD/");
     }
 
-    public static Properties getClientProperties()
+    public Properties getClientProperties()
     {
         return clientProperties;
     }
 
-    public static File getSettingsFile()
+    public File getSettingsFile()
     {
         return settingsFile;
     }

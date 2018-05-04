@@ -73,6 +73,10 @@ public class IntroView extends JPanel
         this.exit.setPreferredSize(this.buttonsize);
         this.exit.setFocusPainted(false);
         this.exit.setForeground(Colors.buttonFontColor());
-        this.exit.addActionListener(e -> GameFrame.getFrame().dispose());
+        this.exit.addActionListener(e ->
+        {
+            GameFrame.getFrame().dispose();
+            System.exit(1);
+        });
     }
 }

@@ -10,8 +10,6 @@ public class AudioControl implements Runnable
     private final String path;
     private Clip clip;
     private DataLine.Info info;
-    public boolean muted;
-
     public AudioControl(String path)
     {
         this.path = path;
@@ -39,13 +37,11 @@ public class AudioControl implements Runnable
 
             byte[] bytesBuffer = new byte[BUFFER_SIZE];
             int bytesRead;
-            this.muted = false;
+
             while (this.clip.isActive())
             {
-                if(muted)
-                {
-                    break;
-                }
+                //needed to play
+                //sorry
             }
 
             clip.drain();
@@ -57,16 +53,5 @@ public class AudioControl implements Runnable
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
             ex.printStackTrace();
         }
-    }
-
-
-    public boolean isMuted()
-    {
-        return muted;
-    }
-
-    public void setMuted(boolean muted)
-    {
-        this.muted = muted;
     }
 }
