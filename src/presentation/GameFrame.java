@@ -51,7 +51,7 @@ public class GameFrame implements Runnable
         try
         {
             connectionToServer("localhost", 8000);
-            checkClientSettings();
+            setup();
         } catch (IOException e)
         {
             e.printStackTrace();
