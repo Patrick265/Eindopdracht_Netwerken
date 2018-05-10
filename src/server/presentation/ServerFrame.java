@@ -31,7 +31,7 @@ public class ServerFrame
 
     public String standardClientText(InetAddress inetAddress)
     {
-        return "Client " + inetAddress.getHostName() + " is connected. " + "\n" + "IP-adress is:" + inetAddress.getHostAddress() + "\n";
+        return "\n" + "Client " + inetAddress.getHostName() + " is connected. " + "\n" + "IP-adress is:" + inetAddress.getHostAddress() + "\n";
     }
     public JTextArea getTextArea()
     {
