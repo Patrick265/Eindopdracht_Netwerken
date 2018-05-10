@@ -23,14 +23,14 @@ public class GameFrame implements Runnable
     {
         this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
         this.gameName = gameName;
-        this.clientSettings = new ClientSettings();
+        this.clientSettings= ClientSettings.getInstance();
     }
 
     public GameFrame()
     {
         this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
         this.gameName = "";
-        this.clientSettings = new ClientSettings();
+        this.clientSettings= ClientSettings.getInstance();
     }
 
     @Override
@@ -43,6 +43,7 @@ public class GameFrame implements Runnable
         mainPanel.add(new IntroView(), BorderLayout.CENTER);
 
         frame.setContentPane(mainPanel);
+        setup();
         frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
                         (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
 
@@ -64,23 +65,12 @@ public class GameFrame implements Runnable
         frame.requestFocus();
     }
 
-
-    public void checkClientSettings() throws IOException
+    public void setup()
     {
-        ClientSettings.check();
-        if(ClientSettings.getSettingsFile().length() == 0)
-        {
-            frame.setSize(this.screensize.width, this.screensize.height);
-            ClientSettings.getClientProperties().put("width", String.valueOf(frame.getWidth()));
-            ClientSettings.getClientProperties().put("height", String.valueOf(frame.getHeight()));
-            ClientSettings.write();
-        }
-        else
-        {
-            ClientSettings.read();
-            frame.setSize(new Dimension(Integer.parseInt(ClientSettings.getClientProperties().getProperty("width")),
-                                        Integer.parseInt(ClientSettings.getClientProperties().getProperty("height"))));
-        }
+        System.out.println(clientSettings.getClientProperties().getProperty("width"));
+        System.out.println(clientSettings.getClientProperties().getProperty("height"));
+        frame.setSize(  Integer.parseInt(clientSettings.getClientProperties().getProperty("width")),
+                        Integer.parseInt(clientSettings.getClientProperties().getProperty("height")));
     }
 
     private void connectionToServer(String adress, int port) throws IOException
@@ -95,5 +85,10 @@ public class GameFrame implements Runnable
     public static JFrame getFrame()
     {
         return frame;
+    }
+
+    public Dimension getScreenSize()
+    {
+        return screensize;
     }
 }
