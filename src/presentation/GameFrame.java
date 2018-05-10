@@ -4,8 +4,12 @@ import datamanager.ClientSettings;
 import presentation.views.IntroView;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 
 public class GameFrame implements Runnable
 {
@@ -42,8 +46,10 @@ public class GameFrame implements Runnable
         frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
                         (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
 
+
         try
         {
+            connectionToServer("localhost", 8000);
             checkClientSettings();
         } catch (IOException e)
         {
@@ -56,8 +62,6 @@ public class GameFrame implements Runnable
         frame.setVisible(true);
         frame.setFocusable(true);
         frame.requestFocus();
-
-
     }
 
 
@@ -77,6 +81,15 @@ public class GameFrame implements Runnable
             frame.setSize(new Dimension(Integer.parseInt(ClientSettings.getClientProperties().getProperty("width")),
                                         Integer.parseInt(ClientSettings.getClientProperties().getProperty("height"))));
         }
+    }
+
+    private void connectionToServer(String adress, int port) throws IOException
+    {
+        Socket socket = new Socket(adress, port);
+        DataInputStream fromServer = new DataInputStream(socket.getInputStream());
+        DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
+
+        toServer.flush();
     }
 
     public static JFrame getFrame()
