@@ -9,7 +9,7 @@ public class cliensettingsTest
 
     public cliensettingsTest()
     {
-        this.clientSettings = new ClientSettings();
+        this.clientSettings = ClientSettings.getInstance();
     }
 
     @Test

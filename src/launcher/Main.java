@@ -1,10 +1,13 @@
 package launcher;
 
 import audio.AudioControl;
+import datamanager.ClientSettings;
 import presentation.GameFrame;
 import presentation.template.Colors;
+import presentation.views.SettingsView;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * @author Tom Martens, Patrick de Jong
@@ -14,6 +17,11 @@ public class Main
 {
     public static void main(String[] args)
     {
+        new Main();
+    }
+
+    public Main()
+    {
         try
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -21,14 +29,36 @@ public class Main
         {
             e.printStackTrace();
         }
-        Runnable frame = new GameFrame("TreacherousMUD");
-        Runnable audio = new AudioControl("res/audio/background.wav");
+
+        ClientSettings clientSettings = ClientSettings.getInstance();
+        try
+        {
+            if(clientSettings.getSettingsFile().exists() && clientSettings.getSettingsFile().length() != 0)
+            {
+                clientSettings.read();
+            }
+            else{
+                clientSettings.setup();
+            }
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        GameFrame frame = new GameFrame("TreacherousMUD");
+        AudioControl audio = new AudioControl("res/audio/background.wav");
 
 
         Thread frameThread = new Thread(frame);
         Thread audioThread = new Thread(audio);
 
         frameThread.start();
-        audioThread.start();
+        System.out.println(clientSettings.getClientProperties());
+
+        if(clientSettings.getClientProperties().getProperty("audio").equals("true"))
+        {
+            audioThread.start();
+        }
     }
 }
