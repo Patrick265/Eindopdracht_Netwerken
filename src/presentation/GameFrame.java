@@ -45,40 +45,32 @@ public class GameFrame implements Runnable
 
         frame.setContentPane(mainPanel);
         setup();
-        frame.setLocation((int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
-                        (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
-
-
-        try
-        {
-            connectionToServer("145.49.48.60", 420);
-            setup();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            connectionToServer("145.49.48.60", 420);
+//            setup();
+//        } catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
 
         frame.setLocation(  (int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
                             (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
+
         frame.setResizable(false);
         frame.setVisible(true);
-        frame.setFocusable(true);
-        frame.requestFocus();
     }
 
     public void setup()
     {
-        System.out.println(clientSettings.getClientProperties().getProperty("width"));
-        System.out.println(clientSettings.getClientProperties().getProperty("height"));
-        frame.setSize(  Integer.parseInt(clientSettings.getClientProperties().getProperty("width")),
-                        Integer.parseInt(clientSettings.getClientProperties().getProperty("height")));
+        frame.setSize(800,600);
     }
 
     private void connectionToServer(String adress, int port) throws IOException
     {
         Socket socket = new Socket(adress, port);
-        DataInputStream fromServer = new DataInputStream(socket.getInputStream());
         DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
+        DataInputStream fromServer = new DataInputStream(socket.getInputStream());
 
         toServer.flush();
     }

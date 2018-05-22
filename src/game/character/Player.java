@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class Player implements KeyListener
+public class Player
 {
     private Point location;
     private String name;
@@ -30,41 +30,16 @@ public class Player implements KeyListener
         AffineTransform af = new AffineTransform();
         af.translate(location.getX() + 16 - playerSkin.getWidth()/2, location.getY() + 12 - playerSkin.getHeight()/2);
         g2d.drawImage(playerSkin,af,null);
+        g2d.drawString(name,(int)location.getX(),(int)location.getY() - 30);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e)
+    public Point getLocation()
     {
-
+        return location;
     }
 
-    @Override
-    public void keyPressed(KeyEvent e)
+    public void setLocation(int x , int y)
     {
-        if(e.getKeyCode() == KeyEvent.VK_W)
-        {
-            this.location.setLocation(this.location.getX(), this.location.getY() + 5);
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_S)
-        {
-            this.location.setLocation(this.location.getX(), this.location.getY() - 5);
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_D)
-        {
-            this.location.setLocation(this.location.getX() + 5, this.location.getY());
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_A)
-        {
-            this.location.setLocation(this.location.getX() - 5, this.location.getY());
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e)
-    {
-
+        location.setLocation(x,y);
     }
 }

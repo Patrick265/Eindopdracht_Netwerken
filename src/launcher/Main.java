@@ -56,11 +56,5 @@ public class Main
         Thread audioThread = new Thread(audio);
 
         frameThread.start();
-        System.out.println(clientSettings.getClientProperties());
-
-        if(clientSettings.getClientProperties().getProperty("audio").equals("true"))
-        {
-            audioThread.start();
-        }
     }
 }
