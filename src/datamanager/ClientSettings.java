@@ -42,6 +42,7 @@ public class ClientSettings
         try
         {
             check();
+
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -98,6 +99,7 @@ public class ClientSettings
             } else {
                 System.out.println("Creating folder for client settingsFile");
                 new File(String.valueOf(dataPath + "/client/")).mkdir();
+                this.settingsFile = new File(clientPath + "/config.properties");
             }
         }
 
@@ -156,6 +158,7 @@ public class ClientSettings
         clientProperties.put("width", String.valueOf(gameFrame.getScreenSize().width));
         clientProperties.put("height", String.valueOf(gameFrame.getScreenSize().height));
         clientProperties.put("audio", String.valueOf(true));
+        System.out.println("writing");
         write();
     }
 

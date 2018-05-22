@@ -35,9 +35,11 @@ public class Main
         {
             if(clientSettings.getSettingsFile().exists() && clientSettings.getSettingsFile().length() != 0)
             {
+
                 clientSettings.read();
             }
             else{
+
                 clientSettings.setup();
             }
 
