@@ -1,6 +1,7 @@
 package presentation;
 
 import datamanager.ClientSettings;
+import game.GameDrawer;
 import presentation.views.IntroView;
 
 import javax.swing.*;
@@ -40,7 +41,7 @@ public class GameFrame implements Runnable
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.mainPanel = new JPanel(new BorderLayout());
 
-        mainPanel.add(new IntroView(), BorderLayout.CENTER);
+        mainPanel.add(new GameDrawer(), BorderLayout.CENTER);
 
         frame.setContentPane(mainPanel);
         setup();
@@ -50,7 +51,7 @@ public class GameFrame implements Runnable
 
         try
         {
-            connectionToServer("localhost", 8000);
+            connectionToServer("145.49.48.60", 420);
             setup();
         } catch (IOException e)
         {
