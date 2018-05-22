@@ -3,7 +3,6 @@ package launcher;
 import audio.AudioControl;
 import datamanager.ClientSettings;
 import presentation.GameFrame;
-import presentation.connectorframe.IpConnectView;
 
 import javax.swing.*;
 import java.io.IOException;

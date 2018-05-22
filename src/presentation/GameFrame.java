@@ -2,15 +2,9 @@ package presentation;
 
 import datamanager.ClientSettings;
 import game.GameDrawer;
-import game.character.Player;
-import presentation.connectorframe.IpConnectView;
-import presentation.views.IntroView;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
-import java.io.*;
-import java.net.Socket;
 
 public class GameFrame implements Runnable
 {

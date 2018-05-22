@@ -1,5 +1,7 @@
 package game.character;
 
+import presentation.loginframe.LoginView;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,7 +20,7 @@ public class Player implements Serializable
 
     public Player(Point location, String name) {
         this.location = location;
-        this.name = name;
+        this.name = LoginView.getUsername();
         try {
             playerSkin = ImageIO.read(new FileInputStream("res/charachter/charachter.png"));
         } catch (IOException e) {

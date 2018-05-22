@@ -2,12 +2,12 @@ package game;
 
 import game.character.Player;
 import game.map.TiledMap;
-import presentation.connectorframe.IpConnectView;
+import presentation.GameFrame;
+import presentation.loginframe.LoginView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,10 +30,12 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
         try
         {
-            connectionToServer(IpConnectView.getAddress(), 420);
+            connectionToServer(LoginView.getAddress(), 420);
+
         } catch (IOException e)
         {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,"Cannot connect to server");
+            System.exit(1);
         }
     }
 
