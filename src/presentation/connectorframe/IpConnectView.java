@@ -1,34 +1,49 @@
 package presentation.connectorframe;
 
+import launcher.Main;
+import presentation.GameFrame;
+import sun.misc.Launcher;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class View
+public class IpConnectView implements Runnable
 {
+
+    public static void main(String[] args)
+    {
+        Thread thread = new Thread(new IpConnectView());
+        thread.start();
+    }
     private JFrame frame;
     private JPanel panel;
     private JButton connect;
     private JTextField field;
-    private String address;
+    private static String address;
 
-    public static void main(String[] args)
+    public static String getAddress()
     {
-        new View();
+        return address;
     }
-    public View()
+
+    @Override
+    public void run()
     {
         this.frame = new JFrame("Connect to IP-Adress");
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.panel = new JPanel();
 
+        this.field = new JTextField();
+        this.field.setPreferredSize(new Dimension(275,35));
 
         this.connect = new JButton("Connect");
         this.connect.setPreferredSize(new Dimension(100,35));
         this.connect.addActionListener(e -> {
-            this.address = this.field.getText();
+            address = this.field.getText();
+            Main launcher = new Main();
+            this.frame.dispose();
         });
-        this.field = new JTextField();
-        this.field.setPreferredSize(new Dimension(275,35));
+
 
         this.panel.add(this.field);
         this.panel.add(this.connect);
@@ -38,8 +53,5 @@ public class View
         this.frame.setVisible(true);
     }
 
-    public String getAddress()
-    {
-        return address;
-    }
+
 }

@@ -3,8 +3,7 @@ package launcher;
 import audio.AudioControl;
 import datamanager.ClientSettings;
 import presentation.GameFrame;
-import presentation.template.Colors;
-import presentation.views.SettingsView;
+import presentation.connectorframe.IpConnectView;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -15,11 +14,6 @@ import java.io.IOException;
  */
 public class Main
 {
-    public static void main(String[] args)
-    {
-        new Main();
-    }
-
     public Main()
     {
         try
