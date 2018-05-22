@@ -15,7 +15,7 @@ import java.net.Socket;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
-    private static Player player;
+    private Player player;
     private ObjectOutputStream toServer;
     private ObjectInputStream fromServer;
 
@@ -79,7 +79,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
         try
         {
-            writeObject(player);
+            writeObject();
         } catch (IOException e1)
         {
             e1.printStackTrace();
@@ -98,7 +98,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         repaint();
     }
 
-    public static Player getPlayer()
+    public Player getPlayer()
     {
         return player;
     }
@@ -107,15 +107,16 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     {
         Socket socket = new Socket(adress, port);
         toServer = new ObjectOutputStream(socket.getOutputStream());
+        toServer.flush();
         fromServer = new ObjectInputStream(socket.getInputStream());
 
-        toServer.writeObject(GameDrawer.getPlayer());
+        toServer.writeObject(player);
         toServer.flush();
     }
 
-    private void writeObject(Player object) throws IOException
+    private void writeObject() throws IOException
     {
-        toServer.writeObject(object);
+        toServer.writeObject(player);
         toServer.flush();
     }
 }

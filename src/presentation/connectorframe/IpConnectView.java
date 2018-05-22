@@ -33,7 +33,7 @@ public class IpConnectView implements Runnable
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.panel = new JPanel();
 
-        this.field = new JTextField();
+        this.field = new JTextField("145.49.48.60");
         this.field.setPreferredSize(new Dimension(275,35));
 
         this.connect = new JButton("Connect");
