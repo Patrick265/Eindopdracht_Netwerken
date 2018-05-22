@@ -13,7 +13,7 @@ public class GameDrawer extends JPanel
 
     public GameDrawer()
     {
-        player = new Player(new Point(0,0),"Frankie");
+        player = new Player(new Point(200,200),"Frankie");
     }
 
     @Override

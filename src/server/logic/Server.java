@@ -21,7 +21,7 @@ public class Server implements Runnable
         try
         {
             frame.getTextArea().append("Server started on " + formatter.format(new Date()));
-            ServerSocket serverSocket = new ServerSocket(8000);
+            ServerSocket serverSocket = new ServerSocket(420);
             int clientNR = 1;
             while (true)
             {
