@@ -1,8 +1,8 @@
 package server.logic;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import game.character.Player;
+
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable
@@ -21,10 +21,20 @@ public class ClientHandler implements Runnable
     {
         try
         {
-            DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
-            DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
+            ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
+            outputToClientObject.flush();
+            ObjectInputStream inputFromClientObject = new ObjectInputStream(socket.getInputStream());
+
+            while (true) {
+                //DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
+                //DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
+
+                System.out.println(inputFromClientObject.readObject().toString());
+            }
         } catch (IOException e)
         {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
