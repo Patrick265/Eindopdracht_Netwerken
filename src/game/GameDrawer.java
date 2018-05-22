@@ -14,9 +14,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
     public GameDrawer()
     {
-        super.requestFocus();
-        super.requestFocusInWindow();
-        super.isFocusable();
         super.setFocusable(true);
         player = new Player(new Point(200,200),"Frankie");
         addKeyListener(this);

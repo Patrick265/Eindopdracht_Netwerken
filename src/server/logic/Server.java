@@ -3,6 +3,7 @@ package server.logic;
 import server.presentation.ServerFrame;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ public class Server implements Runnable
         {
             frame.getTextArea().append("Server started on " + formatter.format(new Date()));
             ServerSocket serverSocket = new ServerSocket(420);
+            frame.getTextArea().append("\nThe current server IP: " + Inet4Address.getLocalHost().getHostAddress()+ " with port " + serverSocket.getLocalPort());
             int clientNR = 1;
             while (true)
             {
