@@ -29,7 +29,7 @@ public class Server implements Runnable
             {
                 Socket socket = serverSocket.accept();
                 frame.getTextArea().append(frame.standardClientText(socket.getInetAddress()));
-                ClientHandler clientHandler = new ClientHandler(socket, clientNR);
+                ClientHandler clientHandler = new ClientHandler(socket, clientNR, frame.getTextArea());
 
                 new Thread(clientHandler).start();
                 clients.add(clientHandler);

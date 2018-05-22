@@ -2,25 +2,25 @@ package server.logic;
 
 import game.character.Player;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 
-public class ClientHandler implements Runnable
-{
+public class ClientHandler implements Runnable {
     private Socket socket;
     private int clientNumber;
+    private Player player;
+    private JTextArea textArea;
 
-    public ClientHandler(Socket socket, int clientNumber)
-    {
+    public ClientHandler(Socket socket, int clientNumber, JTextArea textArea) {
         this.socket = socket;
         this.clientNumber = clientNumber;
     }
 
     @Override
-    public void run()
-    {
-        try
-        {
+    public void run() {
+        try {
             ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
             outputToClientObject.flush();
             ObjectInputStream inputFromClientObject = new ObjectInputStream(socket.getInputStream());
@@ -31,11 +31,12 @@ public class ClientHandler implements Runnable
 
                 System.out.println(inputFromClientObject.readObject().toString());
             }
-        } catch (IOException e)
-        {
+        } catch (EOFException e) {
+            System.out.println("User disconnected");
+        } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }
