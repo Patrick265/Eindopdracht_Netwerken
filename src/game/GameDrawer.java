@@ -76,4 +76,9 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     {
         repaint();
     }
+
+    public Player getPlayer()
+    {
+        return player;
+    }
 }
