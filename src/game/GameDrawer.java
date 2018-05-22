@@ -2,15 +2,23 @@ package game;
 
 import game.character.Player;
 import game.map.TiledMap;
+import presentation.connectorframe.IpConnectView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
-    private Player player;
+    private static Player player;
+    private ObjectOutputStream toServer;
+    private ObjectInputStream fromServer;
+
 
     public GameDrawer()
     {
@@ -19,6 +27,14 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         addKeyListener(this);
         Timer timer = new Timer(1000/250,this);
         timer.start();
+
+        try
+        {
+            connectionToServer(IpConnectView.getAddress(), 420);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -60,6 +76,14 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         {
             this.player.setLocation((int) this.player.getLocation().getX() - 25, (int) this.player.getLocation().getY());
         }
+
+        try
+        {
+            writeObject(player);
+        } catch (IOException e1)
+        {
+            e1.printStackTrace();
+        }
     }
 
     @Override
@@ -74,8 +98,24 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         repaint();
     }
 
-    public Player getPlayer()
+    public static Player getPlayer()
     {
         return player;
+    }
+
+    private void connectionToServer(String adress, int port) throws IOException
+    {
+        Socket socket = new Socket(adress, port);
+        toServer = new ObjectOutputStream(socket.getOutputStream());
+        fromServer = new ObjectInputStream(socket.getInputStream());
+
+        toServer.writeObject(GameDrawer.getPlayer());
+        toServer.flush();
+    }
+
+    private void writeObject(Player object) throws IOException
+    {
+        toServer.writeObject(object);
+        toServer.flush();
     }
 }

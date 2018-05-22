@@ -2,15 +2,14 @@ package presentation;
 
 import datamanager.ClientSettings;
 import game.GameDrawer;
+import game.character.Player;
 import presentation.connectorframe.IpConnectView;
 import presentation.views.IntroView;
 
 import javax.swing.*;
 import javax.xml.crypto.Data;
 import java.awt.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class GameFrame implements Runnable
@@ -45,15 +44,7 @@ public class GameFrame implements Runnable
 
         frame.setContentPane(mainPanel);
         setup();
-        try
-        {
-            System.out.println(IpConnectView.getAddress());
-            connectionToServer(IpConnectView.getAddress(), 420);
-            setup();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+
 
         frame.setLocation(  (int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
                             (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
@@ -67,14 +58,7 @@ public class GameFrame implements Runnable
         frame.setSize(800,600);
     }
 
-    private void connectionToServer(String adress, int port) throws IOException
-    {
-        Socket socket = new Socket(adress, port);
-        DataOutputStream toServer = new DataOutputStream(socket.getOutputStream());
-        DataInputStream fromServer = new DataInputStream(socket.getInputStream());
 
-        toServer.flush();
-    }
 
     public static JFrame getFrame()
     {

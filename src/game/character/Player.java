@@ -8,12 +8,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Player
+public class Player implements Serializable
 {
     private Point location;
     private String name;
-    private BufferedImage playerSkin;
+    private transient BufferedImage playerSkin;
 
     public Player(Point location, String name) {
         this.location = location;
