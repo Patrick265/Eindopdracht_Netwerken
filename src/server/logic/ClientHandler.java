@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -30,7 +31,10 @@ public class ClientHandler implements Runnable {
                 //DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
 
                 System.out.println(inputFromClientObject.readObject().toString());
+                outputToClientObject.flush();
             }
+        } catch (SocketException e) {
+            System.out.println("User disconnected from the server");
         } catch (EOFException e) {
             System.out.println("User disconnected");
         } catch (IOException e) {

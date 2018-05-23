@@ -110,15 +110,18 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         Socket socket = new Socket(adress, port);
         toServer = new ObjectOutputStream(socket.getOutputStream());
         toServer.flush();
+        toServer.reset();
         fromServer = new ObjectInputStream(socket.getInputStream());
 
-        toServer.writeObject(player);
+        toServer.writeObject(this.player);
+        toServer.reset();
         toServer.flush();
     }
 
     private void writeObject() throws IOException
     {
-        toServer.writeObject(player);
+        toServer.writeObject(this.player);
         toServer.flush();
+        toServer.reset();
     }
 }

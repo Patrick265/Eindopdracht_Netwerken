@@ -45,4 +45,13 @@ public class Player implements Serializable
     {
         location.setLocation(x,y);
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "location=" + location +
+                ", name='" + name + '\'' +
+                ", playerSkin=" + playerSkin +
+                '}';
+    }
 }
