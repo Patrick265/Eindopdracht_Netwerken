@@ -14,6 +14,7 @@ public class Server implements Runnable
 {
     private ArrayList<ClientHandler> clients = new ArrayList<>();
 
+
     @Override
     public void run()
     {

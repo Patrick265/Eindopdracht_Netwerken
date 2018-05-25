@@ -25,12 +25,16 @@ public class ClientHandler implements Runnable {
             ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
             outputToClientObject.flush();
             ObjectInputStream inputFromClientObject = new ObjectInputStream(socket.getInputStream());
-
+            player = (Player) inputFromClientObject.readObject();
             while (true) {
                 //DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
                 //DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
 
-                System.out.println(inputFromClientObject.readObject().toString());
+                //System.out.println(inputFromClientObject.readObject().toString());
+                Point currentPos = ((Player) inputFromClientObject.readObject()).getLocation();
+                player.setLocation(
+                        (int)currentPos.getX(),
+                        (int)currentPos.getY());
                 outputToClientObject.flush();
             }
         } catch (SocketException e) {
@@ -43,4 +47,9 @@ public class ClientHandler implements Runnable {
             //e.printStackTrace();
         }
     }
+    public Player getPlayer() {
+        return player;
+    }
+
+
 }
