@@ -41,7 +41,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             System.exit(1);
         }
 
-        this.dataReceiver = new DataReceiver(this.socket);
+        this.dataReceiver = new DataReceiver(this.socket,this);
         new Thread(this.dataReceiver).start();
 
         Timer timer = new Timer(1000/250,this);
@@ -60,11 +60,9 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
         for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet())
             {
-                System.out.print(entry.getValue().getLocation() + "    ");
-                System.out.println();
                 g2d.fill(new Rectangle((int)entry.getValue().getLocation().getX(),
                         (int) entry.getValue().getLocation().getY(),
-                        10,10));
+                        32,32));
 
             }
     }

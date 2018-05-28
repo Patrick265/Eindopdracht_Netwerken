@@ -2,6 +2,8 @@ package game;
 
 import game.character.Player;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -12,12 +14,13 @@ public class DataReceiver implements Runnable
 {
     private Socket socket;
     private Map<String, Player> players;
-    private ObjectInputStream objectInputStream = null;
+    private JPanel jpanel;
 
-    public DataReceiver(Socket socket)
+    public DataReceiver(Socket socket, JPanel jpanel)
     {
         this.socket = socket;
         this.players = new HashMap<>();
+        this.jpanel = jpanel;
     }
 
     @Override
@@ -27,17 +30,16 @@ public class DataReceiver implements Runnable
         {
 
             System.out.println("Entered in DataReciever" + "\n" + "-------------------------------");
-            this.objectInputStream = new ObjectInputStream(socket.getInputStream());
-            System.out.println("SNKOALNKSDLNALNSAKNDA");
+            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 
             while(true)
             {
 
-                System.out.println(this.objectInputStream.readObject());
-                Player player = (Player) this.objectInputStream.readObject();
-                System.out.println("TEST");
+                Player player = (Player) objectInputStream.readObject();
                 players.put(player.getName(), player);
-//                this.objectInputStream.reset();
+                jpanel.repaint();
+
+
             }
         } catch (IOException | ClassNotFoundException e)
         {
