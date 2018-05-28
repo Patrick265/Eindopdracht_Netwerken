@@ -10,14 +10,14 @@ import java.util.List;
 
 public class DataTransmitter implements Runnable, Serializable
 {
-    private List<ClientHandler> clients;
+    private List<Player> players;
     private ObjectOutputStream transmitter;
     private Socket socket;
     private Server server;
 
-    public DataTransmitter(List<ClientHandler> clients, Socket socket, Server server)
+    public DataTransmitter(List<Player> players, Socket socket, Server server)
     {
-        this.clients = clients;
+        this.players = players;
         this.socket = socket;
         this.server = server;
     }
@@ -30,16 +30,17 @@ public class DataTransmitter implements Runnable, Serializable
             this.transmitter = new ObjectOutputStream(this.socket.getOutputStream());
             while(true)
             {
-                this.clients.forEach(a -> System.out.println(a.getPlayer()));
-                this.clients = this.server.getClients();
-                this.clients.forEach(a -> System.out.println(a.getPlayer()));
-                this.transmitter.flush();
-                for(ClientHandler client : clients)
-                {
-                    System.out.println("Fucking kut code" + client.getPlayer());
-                    this.transmitter.writeObject(client.getPlayer());
+                System.out.println(this.server.getPlayers());
+                    this.players = this.server.getPlayers();
                     this.transmitter.flush();
-                }
+                    for (Player player : players)
+                    {
+
+                        System.out.println("Player van client " + player);
+                        this.transmitter.writeObject(player);
+                        this.transmitter.flush();
+                        this.transmitter.reset();
+                    }
             }
         } catch (IOException e)
         {

@@ -59,4 +59,9 @@ public class Player implements Serializable
     {
         return name;
     }
+
+    public BufferedImage getPlayerSkin()
+    {
+        return playerSkin;
+    }
 }

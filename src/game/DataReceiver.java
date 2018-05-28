@@ -32,8 +32,9 @@ public class DataReceiver implements Runnable
             while(true)
             {
                 Player player = (Player) this.objectInputStream.readObject();
+                System.out.println("RECIEVER: "  + player);
                 players.put(player.getName(), player);
-
+                this.objectInputStream.reset();
             }
         } catch (IOException | ClassNotFoundException e)
         {

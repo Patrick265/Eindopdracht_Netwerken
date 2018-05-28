@@ -32,7 +32,12 @@ public class ClientHandler implements Runnable {
                         (int)currentPos.getX(),
                         (int)currentPos.getY());
                 outputToClientObject.flush();
+
+                System.out.println("TOM ZIJN CODE: " + player.toString());
+
             }
+
+
 
         } catch (SocketException e)
         {

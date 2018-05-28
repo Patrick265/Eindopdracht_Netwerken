@@ -36,10 +36,15 @@ public class Server implements Runnable
                 ClientHandler clientHandler = new ClientHandler(socket, clientNR, frame.getTextArea());
 
                 new Thread(clientHandler).start();
-                clients.add(clientHandler);
+                for(ClientHandler client : clients)
+                {
+                    System.out.println(client.getPlayer().toString());
+                    this.players.add(client.getPlayer());
+                }
 
+                clients.add(clientHandler);
                 clientNR++;
-                DataTransmitter dataTransmitter = new DataTransmitter(this.clients, socket, this);
+                DataTransmitter dataTransmitter = new DataTransmitter(this.players, socket, this);
                 new Thread(dataTransmitter).start();
 
             }
@@ -52,5 +57,10 @@ public class Server implements Runnable
     public ArrayList<ClientHandler> getClients()
     {
         return clients;
+    }
+
+    public ArrayList<Player> getPlayers()
+    {
+        return players;
     }
 }

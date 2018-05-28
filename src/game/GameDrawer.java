@@ -7,6 +7,7 @@ import presentation.loginframe.LoginView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
+    private int counter;
     private Player player;
     private ObjectOutputStream toServer;
     private ObjectInputStream fromServer;
@@ -25,10 +27,9 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     public GameDrawer()
     {
         super.setFocusable(true);
+        this.counter = 0;
         player = new Player(new Point(200,200),"Frankie");
         addKeyListener(this);
-        Timer timer = new Timer(1000/250,this);
-        timer.start();
 
         try
         {
@@ -43,6 +44,9 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         this.dataReceiver = new DataReceiver(this.socket);
         new Thread(this.dataReceiver).start();
 
+        Timer timer = new Timer(1000/250,this);
+        timer.start();
+
     }
 
     @Override
@@ -55,13 +59,15 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         player.drawPlayer(g2d);
 
         System.out.println(this.dataReceiver.getPlayers().size());
-        if(this.dataReceiver.getPlayers().size() != 0)
-        {
-            for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet())
+        for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet())
             {
-                entry.getValue().drawPlayer(g2d);
+                System.out.print(entry.getValue().getLocation() + "    ");
+                System.out.println();
+                g2d.fill(new Rectangle((int)entry.getValue().getLocation().getX(),
+                        (int) entry.getValue().getLocation().getY(),
+                        10,10));
+
             }
-        }
     }
 
 
@@ -112,7 +118,12 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        if(counter >= 1)
+        {
+            this.dataReceiver.getPlayers();
+        }
         repaint();
+        this.counter++;
     }
 
     public Player getPlayer()
