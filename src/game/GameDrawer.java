@@ -58,7 +58,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         map.debugDraw(g2d);
         player.drawPlayer(g2d);
 
-        System.out.println(this.dataReceiver.getPlayers().size());
         for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet())
             {
                 System.out.print(entry.getValue().getLocation() + "    ");
@@ -135,9 +134,8 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     {
         this.socket = new Socket(adress, port);
         toServer = new ObjectOutputStream(socket.getOutputStream());
-        toServer.flush();
         toServer.reset();
-        fromServer = new ObjectInputStream(socket.getInputStream());
+        toServer.flush();
 
         toServer.writeObject(this.player);
         toServer.reset();
@@ -147,8 +145,8 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     private void writeObject() throws IOException
     {
         toServer.writeObject(this.player);
-        toServer.flush();
         toServer.reset();
+        toServer.flush();
     }
 
 }

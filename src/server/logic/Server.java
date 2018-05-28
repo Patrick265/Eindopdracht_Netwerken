@@ -4,18 +4,17 @@ import game.character.Player;
 import server.presentation.ServerFrame;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-public class Server implements Runnable
+public class Server implements Runnable, Serializable
 {
     private ArrayList<ClientHandler> clients = new ArrayList<>();
-    private ArrayList<Player> players;
+    private Map<String, Player> players = new HashMap<>();
 
     @Override
     public void run()
@@ -33,19 +32,13 @@ public class Server implements Runnable
 
                 Socket socket = serverSocket.accept();
                 frame.getTextArea().append(frame.standardClientText(socket.getInetAddress()));
-                ClientHandler clientHandler = new ClientHandler(socket, clientNR, frame.getTextArea());
+                ClientHandler clientHandler = new ClientHandler(socket, clientNR, frame.getTextArea(), this.players);
 
                 new Thread(clientHandler).start();
-                for(ClientHandler client : clients)
-                {
-                    System.out.println(client.getPlayer().toString());
-                    this.players.add(client.getPlayer());
-                }
-
-                clients.add(clientHandler);
                 clientNR++;
-                DataTransmitter dataTransmitter = new DataTransmitter(this.players, socket, this);
-                new Thread(dataTransmitter).start();
+//                DataTransmitter dataTransmitter = new DataTransmitter(this.players, socket, this);
+//                new Thread(dataTransmitter).start();
+
 
             }
         } catch (IOException e)
@@ -59,7 +52,7 @@ public class Server implements Runnable
         return clients;
     }
 
-    public ArrayList<Player> getPlayers()
+    public Map<String, Player> getPlayers()
     {
         return players;
     }

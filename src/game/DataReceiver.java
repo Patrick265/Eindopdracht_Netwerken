@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class DataReceiver implements Runnable
 {
@@ -27,14 +25,19 @@ public class DataReceiver implements Runnable
     {
         try
         {
+
+            System.out.println("Entered in DataReciever" + "\n" + "-------------------------------");
             this.objectInputStream = new ObjectInputStream(socket.getInputStream());
+            System.out.println("SNKOALNKSDLNALNSAKNDA");
 
             while(true)
             {
+
+                System.out.println(this.objectInputStream.readObject());
                 Player player = (Player) this.objectInputStream.readObject();
-                System.out.println("RECIEVER: "  + player);
+                System.out.println("TEST");
                 players.put(player.getName(), player);
-                this.objectInputStream.reset();
+//                this.objectInputStream.reset();
             }
         } catch (IOException | ClassNotFoundException e)
         {
