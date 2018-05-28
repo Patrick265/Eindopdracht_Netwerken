@@ -27,17 +27,15 @@ public class ClientHandler implements Runnable {
             ObjectInputStream inputFromClientObject = new ObjectInputStream(socket.getInputStream());
             player = (Player) inputFromClientObject.readObject();
             while (true) {
-                //DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
-                //DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
-
-                //System.out.println(inputFromClientObject.readObject().toString());
                 Point currentPos = ((Player) inputFromClientObject.readObject()).getLocation();
                 player.setLocation(
                         (int)currentPos.getX(),
                         (int)currentPos.getY());
                 outputToClientObject.flush();
             }
-        } catch (SocketException e) {
+
+        } catch (SocketException e)
+        {
             System.out.println("User disconnected from the server");
         } catch (EOFException e) {
             System.out.println("User disconnected");

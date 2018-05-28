@@ -1,5 +1,6 @@
 package server.logic;
 
+import game.character.Player;
 import server.presentation.ServerFrame;
 
 import java.io.IOException;
@@ -9,11 +10,12 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Server implements Runnable
 {
     private ArrayList<ClientHandler> clients = new ArrayList<>();
-
+    private ArrayList<Player> players;
 
     @Override
     public void run()
@@ -23,23 +25,32 @@ public class Server implements Runnable
         try
         {
             frame.getTextArea().append("Server started on " + formatter.format(new Date()));
-            ServerSocket serverSocket = new ServerSocket(420);
+            ServerSocket serverSocket = new ServerSocket(8000);
             frame.getTextArea().append("\nThe current server IP: " + Inet4Address.getLocalHost().getHostAddress()+ " with port " + serverSocket.getLocalPort());
             int clientNR = 1;
             while (true)
             {
+
                 Socket socket = serverSocket.accept();
                 frame.getTextArea().append(frame.standardClientText(socket.getInetAddress()));
                 ClientHandler clientHandler = new ClientHandler(socket, clientNR, frame.getTextArea());
 
                 new Thread(clientHandler).start();
                 clients.add(clientHandler);
+
                 clientNR++;
+                DataTransmitter dataTransmitter = new DataTransmitter(this.clients, socket, this);
+                new Thread(dataTransmitter).start();
 
             }
         } catch (IOException e)
         {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<ClientHandler> getClients()
+    {
+        return clients;
     }
 }

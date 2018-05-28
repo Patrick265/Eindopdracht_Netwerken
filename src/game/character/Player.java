@@ -54,4 +54,9 @@ public class Player implements Serializable
                 ", playerSkin=" + playerSkin +
                 '}';
     }
+
+    public String getName()
+    {
+        return name;
+    }
 }

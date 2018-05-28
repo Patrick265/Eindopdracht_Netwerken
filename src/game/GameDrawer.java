@@ -2,7 +2,6 @@ package game;
 
 import game.character.Player;
 import game.map.TiledMap;
-import presentation.GameFrame;
 import presentation.loginframe.LoginView;
 
 import javax.swing.*;
@@ -12,12 +11,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Map;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
     private Player player;
     private ObjectOutputStream toServer;
     private ObjectInputStream fromServer;
+    private DataReceiver dataReceiver;
+    private Socket socket;
 
 
     public GameDrawer()
@@ -30,13 +32,17 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
         try
         {
-            connectionToServer(LoginView.getAddress(), 420);
+            connectionToServer(LoginView.getAddress(), 8000);
 
         } catch (IOException e)
         {
             JOptionPane.showMessageDialog(this,"Cannot connect to server");
             System.exit(1);
         }
+
+        this.dataReceiver = new DataReceiver(this.socket);
+        new Thread(this.dataReceiver).start();
+
     }
 
     @Override
@@ -47,6 +53,15 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         TiledMap map = new TiledMap("res/map/map.json");
         map.debugDraw(g2d);
         player.drawPlayer(g2d);
+
+        System.out.println(this.dataReceiver.getPlayers().size());
+        if(this.dataReceiver.getPlayers().size() != 0)
+        {
+            for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet())
+            {
+                entry.getValue().drawPlayer(g2d);
+            }
+        }
     }
 
 
@@ -107,7 +122,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
     private void connectionToServer(String adress, int port) throws IOException
     {
-        Socket socket = new Socket(adress, port);
+        this.socket = new Socket(adress, port);
         toServer = new ObjectOutputStream(socket.getOutputStream());
         toServer.flush();
         toServer.reset();
@@ -124,4 +139,5 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         toServer.flush();
         toServer.reset();
     }
+
 }
