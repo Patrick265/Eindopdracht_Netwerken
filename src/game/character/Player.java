@@ -32,8 +32,8 @@ public class Player implements Serializable
     {
         AffineTransform af = new AffineTransform();
         af.translate(location.getX() + 16 - playerSkin.getWidth()/2, location.getY() + 12 - playerSkin.getHeight()/2);
-        g2d.drawImage(playerSkin,af,null);
-        g2d.drawString(name,(int)location.getX(),(int)location.getY() - 30);
+        //g2d.drawImage(playerSkin,af,null);
+       // g2d.drawString(name,(int)location.getX(),(int)location.getY() - 30);
     }
 
     public Point getLocation()

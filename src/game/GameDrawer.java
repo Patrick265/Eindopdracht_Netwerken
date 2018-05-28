@@ -56,15 +56,19 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         Graphics2D g2d = (Graphics2D) g;
         TiledMap map = new TiledMap("res/map/map.json");
         map.debugDraw(g2d);
-        player.drawPlayer(g2d);
+       // player.drawPlayer(g2d);
 
-        for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet())
-            {
-                g2d.fill(new Rectangle((int)entry.getValue().getLocation().getX(),
-                        (int) entry.getValue().getLocation().getY(),
-                        32,32));
+        for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet()) {
+            if (entry.getValue() != null) {
+                AffineTransform af = new AffineTransform();
+                af.translate(
+                        (int) entry.getValue().getLocation().getX() + 16 - player.getPlayerSkin().getWidth()/2,
+                        (int) entry.getValue().getLocation().getY() + 12 - player.getPlayerSkin().getHeight()/2);
+                g2d.drawImage(player.getPlayerSkin(), af, null);
+                g2d.drawString(entry.getKey(), (int) entry.getValue().getLocation().getX(), (int) entry.getValue().getLocation().getY());
 
             }
+        }
     }
 
 
