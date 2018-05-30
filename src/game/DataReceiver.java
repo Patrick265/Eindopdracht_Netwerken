@@ -7,6 +7,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,16 +25,13 @@ public class DataReceiver implements Runnable
     }
 
     @Override
-    public void run()
-    {
-        try
-        {
+    public void run() {
+        try {
 
             System.out.println("Entered in DataReciever" + "\n" + "-------------------------------");
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 
-            while(true)
-            {
+            while (true) {
 
                 Player player = (Player) objectInputStream.readObject();
                 players.put(player.getName(), player);
@@ -41,8 +39,9 @@ public class DataReceiver implements Runnable
 
 
             }
-        } catch (IOException | ClassNotFoundException e)
-        {
+        } catch (SocketException e) {
+            System.out.println("User disconnected");
+        } catch (IOException | ClassNotFoundException  e) {
             e.printStackTrace();
         }
 
