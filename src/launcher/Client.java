@@ -1,19 +1,23 @@
 package launcher;
 
 import audio.AudioControl;
-import datamanager.ClientSettings;
-import presentation.GameFrame;
+import presentation.IntroFrame;
 
 import javax.swing.*;
-import java.io.IOException;
 
 /**
  * @author Tom Martens, Patrick de Jong
  * @since 23 April 2018
  */
-public class Main
+public class Client
 {
-    public Main()
+
+    public static void main(String[] args)
+    {
+        new Client();
+    }
+
+    public Client()
     {
         try
         {
@@ -22,29 +26,8 @@ public class Main
         {
             e.printStackTrace();
         }
-
-        ClientSettings clientSettings = ClientSettings.getInstance();
-        try
-        {
-            if(clientSettings.getSettingsFile().exists() && clientSettings.getSettingsFile().length() != 0)
-            {
-
-                clientSettings.read();
-            }
-            else{
-
-                clientSettings.setup();
-            }
-
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        GameFrame frame = new GameFrame("TreacherousMUD");
+        IntroFrame frame = new IntroFrame("TreacherousMUD");
         AudioControl audio = new AudioControl("res/audio/background.wav");
-
-
         Thread frameThread = new Thread(frame);
         Thread audioThread = new Thread(audio);
 

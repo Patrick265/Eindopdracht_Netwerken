@@ -19,11 +19,11 @@ public class Server implements Runnable, Serializable
     @Override
     public void run()
     {
-        ServerFrame frame = new ServerFrame("TreacherousMUD - Server");
+        ServerFrame frame = new ServerFrame("TreacherousMUD - BootServer");
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy kk:mm");
         try
         {
-            frame.getTextArea().append("Server started on " + formatter.format(new Date()));
+            frame.getTextArea().append("BootServer started on " + formatter.format(new Date()));
             ServerSocket serverSocket = new ServerSocket(8000);
             frame.getTextArea().append("\nThe current server IP: " + Inet4Address.getLocalHost().getHostAddress()+ " with port " + serverSocket.getLocalPort());
             int clientNR = 1;

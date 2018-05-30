@@ -2,11 +2,12 @@ package presentation;
 
 import datamanager.ClientSettings;
 import game.GameDrawer;
+import presentation.views.IntroView;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GameFrame implements Runnable
+public class IntroFrame implements Runnable
 {
     private static JFrame frame;
     private JPanel mainPanel;
@@ -14,14 +15,14 @@ public class GameFrame implements Runnable
     private String gameName;
     private ClientSettings clientSettings;
 
-    public GameFrame(String gameName)
+    public IntroFrame(String gameName)
     {
         this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
         this.gameName = gameName;
         this.clientSettings= ClientSettings.getInstance();
     }
 
-    public GameFrame()
+    public IntroFrame()
     {
         this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
         this.gameName = "";
@@ -34,7 +35,7 @@ public class GameFrame implements Runnable
         frame = new JFrame(this.gameName);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.mainPanel = new JPanel(new BorderLayout());
-        this.mainPanel.add(new GameDrawer(), BorderLayout.CENTER);
+        this.mainPanel.add(new IntroView(), BorderLayout.CENTER);
 
         frame.setContentPane(mainPanel);
         setup();

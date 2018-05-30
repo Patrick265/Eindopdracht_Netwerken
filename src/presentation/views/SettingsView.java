@@ -1,8 +1,7 @@
 package presentation.views;
 
-import audio.AudioControl;
 import datamanager.ClientSettings;
-import presentation.GameFrame;
+import presentation.IntroFrame;
 import presentation.template.Colors;
 import presentation.template.Fonts;
 
@@ -82,7 +81,7 @@ public class SettingsView extends JPanel
             {
                 height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 25));
             }
-            GameFrame.getFrame().setSize(width, height);
+            IntroFrame.getFrame().setSize(width, height);
             this.clientSettings.getClientProperties().put("width", String.valueOf(width));
             this.clientSettings.getClientProperties().put("height", String.valueOf(height));
             try
@@ -103,9 +102,9 @@ public class SettingsView extends JPanel
         this.returnView.setForeground(Colors.buttonFontColor());
         this.returnView.addActionListener(e ->
         {
-            GameFrame.getFrame().getContentPane().removeAll();
-            GameFrame.getFrame().setContentPane(new IntroView());
-            GameFrame.getFrame().revalidate();
+            IntroFrame.getFrame().getContentPane().removeAll();
+            IntroFrame.getFrame().setContentPane(new IntroView());
+            IntroFrame.getFrame().revalidate();
         });
 
 

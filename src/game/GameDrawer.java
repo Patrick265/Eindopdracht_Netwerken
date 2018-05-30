@@ -2,7 +2,7 @@ package game;
 
 import game.character.Player;
 import game.map.TiledMap;
-import presentation.loginframe.LoginView;
+import presentation.views.LoginView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +28,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     {
         super.setFocusable(true);
         this.counter = 0;
-        player = new Player(new Point(200,200),"Frankie");
+        player = new Player(new Point(200,200), LoginView.getUsername());
         addKeyListener(this);
 
         try

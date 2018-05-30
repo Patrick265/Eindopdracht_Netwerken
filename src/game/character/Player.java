@@ -1,11 +1,10 @@
 package game.character;
 
-import presentation.loginframe.LoginView;
+import game.GameFrame;
+import presentation.views.LoginView;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -18,9 +17,9 @@ public class Player implements Serializable
     private String name;
     private transient BufferedImage playerSkin;
 
-    public Player(Point location, String name) {
+    public Player(Point location, String username) {
         this.location = location;
-        this.name = LoginView.getUsername();
+        this.name = username;
         try {
             playerSkin = ImageIO.read(new FileInputStream("res/charachter/charachter.png"));
         } catch (IOException e) {

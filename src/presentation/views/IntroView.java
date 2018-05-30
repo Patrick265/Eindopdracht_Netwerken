@@ -1,7 +1,6 @@
 package presentation.views;
 
-import game.GameDrawer;
-import presentation.GameFrame;
+import presentation.IntroFrame;
 import presentation.template.Colors;
 import presentation.template.Fonts;
 
@@ -49,8 +48,8 @@ public class IntroView extends JPanel
         this.play.setFocusPainted(false);
         this.play.addActionListener(e ->
         {
-            GameFrame.getFrame().setContentPane(new GameDrawer());
-            GameFrame.getFrame().revalidate();
+            IntroFrame.getFrame().setContentPane(new LoginView());
+            IntroFrame.getFrame().revalidate();
         });
 
         this.settings = new JButton("Settings");
@@ -62,8 +61,8 @@ public class IntroView extends JPanel
         this.settings.setForeground(Colors.buttonFontColor());
         this.settings.addActionListener(e ->
         {
-            GameFrame.getFrame().setContentPane(new SettingsView());
-            GameFrame.getFrame().revalidate();
+            IntroFrame.getFrame().setContentPane(new SettingsView());
+            IntroFrame.getFrame().revalidate();
         });
 
         this.exit = new JButton("Exit");
@@ -75,7 +74,7 @@ public class IntroView extends JPanel
         this.exit.setForeground(Colors.buttonFontColor());
         this.exit.addActionListener(e ->
         {
-            GameFrame.getFrame().dispose();
+            IntroFrame.getFrame().dispose();
             System.exit(1);
         });
     }

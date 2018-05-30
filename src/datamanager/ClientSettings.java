@@ -1,6 +1,6 @@
 package datamanager;
 
-import presentation.GameFrame;
+import presentation.IntroFrame;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -77,7 +77,7 @@ public class ClientSettings
             {
                 System.out.println("Looking for settingsFile file");
             } else {
-                //Creating launcher.Main Folder
+                //Creating launcher.Client Folder
                 new File(String.valueOf(dataPath)).mkdir();
 
             }
@@ -111,7 +111,7 @@ public class ClientSettings
             {
                 System.out.println("Looking for settingsFile file");
             } else {
-                //Creating launcher.Main Folder
+                //Creating launcher.Client Folder
                 new File(String.valueOf(dataPath)).mkdir();
 
             }
@@ -154,9 +154,9 @@ public class ClientSettings
      */
     public void setup() throws IOException
     {
-        GameFrame gameFrame = new GameFrame();
-        clientProperties.put("width", String.valueOf(gameFrame.getScreenSize().width));
-        clientProperties.put("height", String.valueOf(gameFrame.getScreenSize().height));
+        IntroFrame introFrame = new IntroFrame();
+        clientProperties.put("width", String.valueOf(introFrame.getScreenSize().width));
+        clientProperties.put("height", String.valueOf(introFrame.getScreenSize().height));
         clientProperties.put("audio", String.valueOf(true));
         System.out.println("writing");
         write();
