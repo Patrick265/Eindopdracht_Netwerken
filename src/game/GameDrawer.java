@@ -81,36 +81,29 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     }
 
     @Override
-    public void keyPressed(KeyEvent e)
-    {
-        if(e.getKeyCode() == KeyEvent.VK_W)
-        {
-            this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() - 2);
-        }
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
 
-        if(e.getKeyCode() == KeyEvent.VK_S)
-        {
-            this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() + 2);
+            case KeyEvent.VK_W:
+                this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() - 4);
+                break;
+            case KeyEvent.VK_S:
+                this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() + 4);
+                break;
+            case KeyEvent.VK_D:
+                this.player.setLocation((int) this.player.getLocation().getX() + 4, (int) this.player.getLocation().getY());
+                break;
+            case KeyEvent.VK_A:
+                this.player.setLocation((int) this.player.getLocation().getX() - 4, (int) this.player.getLocation().getY());
+                break;
         }
-
-        if(e.getKeyCode() == KeyEvent.VK_D)
-        {
-            this.player.setLocation((int) this.player.getLocation().getX() + 2, (int) this.player.getLocation().getY());
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_A)
-        {
-            this.player.setLocation((int) this.player.getLocation().getX() - 2, (int) this.player.getLocation().getY());
-        }
-
-        try
-        {
+        try {
             writeObject();
-        } catch (IOException e1)
-        {
-            e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
         }
-    }
 
     @Override
     public void keyReleased(KeyEvent e)
