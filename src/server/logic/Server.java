@@ -32,13 +32,14 @@ public class Server implements Runnable, Serializable
 
                 Socket socket = serverSocket.accept();
                 frame.getTextArea().append(frame.standardClientText(socket.getInetAddress()));
-                ClientHandler clientHandler = new ClientHandler(socket, clientNR, frame.getTextArea(), this.players);
+                ClientHandler clientHandler = new ClientHandler(socket, clientNR, frame.getTextArea(), this);
 
                 new Thread(clientHandler).start();
                 clientNR++;
 //                DataTransmitter dataTransmitter = new DataTransmitter(this.players, socket, this);
 //                new Thread(dataTransmitter).start();
 
+                frame.getTextArea().append("Amount of players online: " + (players.size() + 1));
 
             }
         } catch (IOException e)

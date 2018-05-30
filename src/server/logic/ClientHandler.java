@@ -1,14 +1,15 @@
 package server.logic;
 
 import game.character.Player;
+import server.presentation.ServerFrame;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
+import server.*;
 
 public class ClientHandler implements Runnable
 {
@@ -16,22 +17,21 @@ public class ClientHandler implements Runnable
     private int clientNumber;
     private Player player;
     private JTextArea textArea;
-    private Map<String, Player> players;
-
-    public ClientHandler(Socket socket, int clientNumber, JTextArea textArea, Map<String, Player> players) {
+    private Server server;
+    public ClientHandler(Socket socket, int clientNumber, JTextArea textArea, Server server) {
         this.socket = socket;
         this.clientNumber = clientNumber;
         this.textArea = textArea;
-        this.players = players;
+        this.server = server;
     }
 
     @Override
     public void run() {
         try {
             ObjectInputStream inputFromClientObject = new ObjectInputStream(socket.getInputStream());
-            Player player = (Player) inputFromClientObject.readObject();
-            players.put(player.getName(), player);
-            DataTransmit dataTransmit = new DataTransmit(this.socket,this.players);
+            this.player = (Player) inputFromClientObject.readObject();
+            server.getPlayers().put(player.getName(), player);
+            DataTransmit dataTransmit = new DataTransmit(this.socket,this.server);
             new Thread(dataTransmit).start();
 
             while (true) {
@@ -40,6 +40,8 @@ public class ClientHandler implements Runnable
                 player.setLocation(
                         (int)currentPos.getX(),
                         (int)currentPos.getY());
+
+                System.out.println(socket.isConnected());
 
                // System.out.println("Player object: " + player.toString());
                // System.out.println("Size of map: " + players.size());
@@ -50,9 +52,15 @@ public class ClientHandler implements Runnable
 
         } catch (SocketException e)
         {
+            System.out.println(this.player.getName());
+            this.server.getPlayers().remove(this.player.getName());
+            this.server.getPlayers().remove(this.player.getName(), this.player);
             System.out.println("User disconnected from the server");
-        } catch (EOFException e) {
+
+        }
+        catch (EOFException e) {
             System.out.println("User disconnected");
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -60,6 +68,7 @@ public class ClientHandler implements Runnable
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
     public Player getPlayer() {
         return player;
@@ -69,11 +78,11 @@ public class ClientHandler implements Runnable
 class DataTransmit implements Runnable
 {
     Socket socket;
-    Map<String, Player> players;
+    Server server;
 
-    DataTransmit(Socket socket,Map<String, Player> players)
+    DataTransmit(Socket socket,Server server)
     {
-        this.players = players;
+        this.server = server;
         this.socket = socket;
     }
 
@@ -83,7 +92,7 @@ class DataTransmit implements Runnable
         ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
             outputToClientObject.flush();
             while(true) {
-                for(Map.Entry<String, Player> entry : players.entrySet())
+                for(Map.Entry<String, Player> entry : server.getPlayers().entrySet())
                 {
                     outputToClientObject.writeObject(entry.getValue());
                     outputToClientObject.flush();
