@@ -35,14 +35,15 @@ public class ClientHandler implements Runnable
             new Thread(dataTransmit).start();
 
             while (true) {
-                Point currentPos = ((Player) inputFromClientObject.readObject()).getLocation();
+                Point currentPos = (Point)
+                        inputFromClientObject.readObject();
                 player.setLocation(
                         (int)currentPos.getX(),
                         (int)currentPos.getY());
 
-                System.out.println("Player object: " + player.toString());
-                System.out.println("Size of map: " + players.size());
-                Thread.sleep(100);
+               // System.out.println("Player object: " + player.toString());
+               // System.out.println("Size of map: " + players.size());
+                Thread.sleep(10);
             }
 
 
@@ -88,7 +89,7 @@ class DataTransmit implements Runnable
                     outputToClientObject.flush();
                     outputToClientObject.reset();
                 }
-                Thread.sleep(100);
+                Thread.sleep(10);
             }
         } catch (IOException e) {
             e.printStackTrace();

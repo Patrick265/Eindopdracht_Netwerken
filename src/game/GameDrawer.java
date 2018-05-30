@@ -44,7 +44,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         this.dataReceiver = new DataReceiver(this.socket,this);
         new Thread(this.dataReceiver).start();
 
-        Timer timer = new Timer(1000/250,this);
+        Timer timer = new Timer(1000/60,this);
         timer.start();
 
     }
@@ -83,22 +83,22 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     {
         if(e.getKeyCode() == KeyEvent.VK_W)
         {
-            this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() - 25);
+            this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() - 2);
         }
 
         if(e.getKeyCode() == KeyEvent.VK_S)
         {
-            this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() + 25);
+            this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() + 2);
         }
 
         if(e.getKeyCode() == KeyEvent.VK_D)
         {
-            this.player.setLocation((int) this.player.getLocation().getX() + 25, (int) this.player.getLocation().getY());
+            this.player.setLocation((int) this.player.getLocation().getX() + 2, (int) this.player.getLocation().getY());
         }
 
         if(e.getKeyCode() == KeyEvent.VK_A)
         {
-            this.player.setLocation((int) this.player.getLocation().getX() - 25, (int) this.player.getLocation().getY());
+            this.player.setLocation((int) this.player.getLocation().getX() - 2, (int) this.player.getLocation().getY());
         }
 
         try
@@ -146,7 +146,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
     private void writeObject() throws IOException
     {
-        toServer.writeObject(this.player);
+        toServer.writeObject(this.player.getLocation());
         toServer.reset();
         toServer.flush();
     }
