@@ -1,7 +1,5 @@
 package game;
 
-import presentation.views.LoginView;
-
 import javax.swing.*;
 
 public class GameFrame

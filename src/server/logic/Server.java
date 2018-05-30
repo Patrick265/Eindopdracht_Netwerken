@@ -36,8 +36,6 @@ public class Server implements Runnable, Serializable
 
                 new Thread(clientHandler).start();
                 clientNR++;
-//                DataTransmitter dataTransmitter = new DataTransmitter(this.players, socket, this);
-//                new Thread(dataTransmitter).start();
 
                 frame.getTextArea().append("Amount of players online: " + (players.size() + 1));
 

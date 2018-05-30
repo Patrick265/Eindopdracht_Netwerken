@@ -1,7 +1,5 @@
 package server.launcher;
 
-import server.logic.Server;
-
 public class BootServer
 {
     public static void main(String[] args)

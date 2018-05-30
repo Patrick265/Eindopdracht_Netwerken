@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
@@ -19,7 +18,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     private int counter;
     private Player player;
     private ObjectOutputStream toServer;
-    private ObjectInputStream fromServer;
     private DataReceiver dataReceiver;
     private Socket socket;
 
@@ -57,7 +55,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         TiledMap map = new TiledMap("res/map/map.json");
         g2d.setFont(new Font("Arial", Font.PLAIN, 16));
         map.debugDraw(g2d);
-       // player.drawPlayer(g2d);
 
         for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet()) {
             if (entry.getValue() != null) {
@@ -68,7 +65,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
                 g2d.drawImage(player.getPlayerSkin(), af, null);
                 g2d.setColor(Color.WHITE);
                 g2d.drawString(entry.getKey(), (int) entry.getValue().getLocation().getX(), (int) entry.getValue().getLocation().getY() - 20);
-
             }
         }
     }
@@ -83,7 +79,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
-
             case KeyEvent.VK_W:
                 this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() - 4);
                 break;
@@ -114,12 +109,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if(counter >= 1)
-        {
-            this.dataReceiver.getPlayers();
-        }
         repaint();
-        this.counter++;
     }
 
     public Player getPlayer()
@@ -132,18 +122,15 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         this.socket = new Socket(adress, port);
         toServer = new ObjectOutputStream(socket.getOutputStream());
         toServer.reset();
-        toServer.flush();
 
         toServer.writeObject(this.player);
         toServer.reset();
-        toServer.flush();
     }
 
     private void writeObject() throws IOException
     {
         toServer.writeObject(this.player.getLocation());
         toServer.reset();
-        toServer.flush();
     }
 
 }

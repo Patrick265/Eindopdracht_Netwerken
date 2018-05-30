@@ -1,7 +1,6 @@
 package presentation;
 
 import datamanager.ClientSettings;
-import game.GameDrawer;
 import presentation.views.IntroView;
 
 import javax.swing.*;

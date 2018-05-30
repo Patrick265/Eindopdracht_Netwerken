@@ -1,6 +1,5 @@
 package presentation.views;
 
-import game.GameDrawer;
 import game.GameFrame;
 import presentation.IntroFrame;
 

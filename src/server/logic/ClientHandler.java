@@ -1,7 +1,6 @@
 package server.logic;
 
 import game.character.Player;
-import server.presentation.ServerFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +8,6 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
-import server.*;
 
 public class ClientHandler implements Runnable
 {
@@ -41,10 +39,6 @@ public class ClientHandler implements Runnable
                         (int)currentPos.getX(),
                         (int)currentPos.getY());
 
-                System.out.println(socket.isConnected());
-
-               // System.out.println("Player object: " + player.toString());
-               // System.out.println("Size of map: " + players.size());
                 Thread.sleep(10);
             }
 
@@ -52,7 +46,6 @@ public class ClientHandler implements Runnable
 
         } catch (SocketException e)
         {
-            System.out.println(this.player.getName());
             this.server.getPlayers().remove(this.player.getName());
             this.server.getPlayers().remove(this.player.getName(), this.player);
             System.out.println("User disconnected from the server");
@@ -95,7 +88,6 @@ class DataTransmit implements Runnable
                 for(Map.Entry<String, Player> entry : server.getPlayers().entrySet())
                 {
                     outputToClientObject.writeObject(entry.getValue());
-                    outputToClientObject.flush();
                     outputToClientObject.reset();
                 }
                 Thread.sleep(10);

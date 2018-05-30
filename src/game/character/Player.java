@@ -1,8 +1,5 @@
 package game.character;
 
-import game.GameFrame;
-import presentation.views.LoginView;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
