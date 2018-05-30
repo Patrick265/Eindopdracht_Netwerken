@@ -55,6 +55,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         TiledMap map = new TiledMap("res/map/map.json");
+        g2d.setFont(new Font("Arial", Font.PLAIN, 16));
         map.debugDraw(g2d);
        // player.drawPlayer(g2d);
 
@@ -65,7 +66,8 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
                         (int) entry.getValue().getLocation().getX() + 16 - player.getPlayerSkin().getWidth()/2,
                         (int) entry.getValue().getLocation().getY() + 12 - player.getPlayerSkin().getHeight()/2);
                 g2d.drawImage(player.getPlayerSkin(), af, null);
-                g2d.drawString(entry.getKey(), (int) entry.getValue().getLocation().getX(), (int) entry.getValue().getLocation().getY());
+                g2d.setColor(Color.WHITE);
+                g2d.drawString(entry.getKey(), (int) entry.getValue().getLocation().getX(), (int) entry.getValue().getLocation().getY() - 20);
 
             }
         }
