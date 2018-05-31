@@ -29,7 +29,7 @@ public class ClientHandler implements Runnable
             ObjectInputStream inputFromClientObject = new ObjectInputStream(socket.getInputStream());
             this.player = (Player) inputFromClientObject.readObject();
             server.getPlayers().put(player.getName(), player);
-            DataTransmit dataTransmit = new DataTransmit(this.socket,this.server);
+            DataTransmit dataTransmit = new DataTransmit(this.socket,this.server,this.player);
             new Thread(dataTransmit).start();
 
             while (true) {
@@ -46,8 +46,7 @@ public class ClientHandler implements Runnable
 
         } catch (SocketException e)
         {
-            this.server.getPlayers().remove(this.player.getName());
-            this.server.getPlayers().remove(this.player.getName(), this.player);
+            this.player.setConnected(false);
             System.out.println("User disconnected from the server");
 
         }
@@ -72,26 +71,31 @@ class DataTransmit implements Runnable
 {
     Socket socket;
     Server server;
+    Player player;
 
-    DataTransmit(Socket socket,Server server)
+    DataTransmit(Socket socket,Server server,Player player)
     {
         this.server = server;
         this.socket = socket;
+        this.player = player;
     }
 
     @Override
     public void run() {
         try {
-        ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
+            ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
             outputToClientObject.flush();
-            while(true) {
-                for(Map.Entry<String, Player> entry : server.getPlayers().entrySet())
-                {
+            while (true) {
+                for (Map.Entry<String, Player> entry : server.getPlayers().entrySet()) {
                     outputToClientObject.writeObject(entry.getValue());
                     outputToClientObject.reset();
                 }
                 Thread.sleep(10);
             }
+        }
+        catch(SocketException e) {
+            this.player.setConnected(false);
+            System.out.println("Set connected to false");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

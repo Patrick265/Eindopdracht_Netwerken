@@ -12,24 +12,18 @@ public class Player implements Serializable
 {
     private Point location;
     private String name;
+    private boolean isConnected;
     private transient BufferedImage playerSkin;
 
-    public Player(Point location, String username) {
+    public Player(Point location, String username,boolean isConnected) {
         this.location = location;
         this.name = username;
+        this.isConnected = isConnected;
         try {
             playerSkin = ImageIO.read(new FileInputStream("res/charachter/charachter.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void drawPlayer(Graphics2D g2d)
-    {
-        AffineTransform af = new AffineTransform();
-        af.translate(location.getX() + 16 - playerSkin.getWidth()/2, location.getY() + 12 - playerSkin.getHeight()/2);
-        //g2d.drawImage(playerSkin,af,null);
-       // g2d.drawString(name,(int)location.getX(),(int)location.getY() - 30);
     }
 
     public Point getLocation()
@@ -59,5 +53,13 @@ public class Player implements Serializable
     public BufferedImage getPlayerSkin()
     {
         return playerSkin;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
     }
 }

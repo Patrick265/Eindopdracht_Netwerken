@@ -26,7 +26,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     {
         super.setFocusable(true);
         this.counter = 0;
-        player = new Player(new Point(200,200), LoginView.getUsername());
+        player = new Player(new Point(200,200), LoginView.getUsername(),true);
         addKeyListener(this);
 
         try
@@ -58,13 +58,15 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
         for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet()) {
             if (entry.getValue() != null) {
-                AffineTransform af = new AffineTransform();
-                af.translate(
-                        (int) entry.getValue().getLocation().getX() + 16 - player.getPlayerSkin().getWidth()/2,
-                        (int) entry.getValue().getLocation().getY() + 12 - player.getPlayerSkin().getHeight()/2);
-                g2d.drawImage(player.getPlayerSkin(), af, null);
-                g2d.setColor(Color.WHITE);
-                g2d.drawString(entry.getKey(), (int) entry.getValue().getLocation().getX(), (int) entry.getValue().getLocation().getY() - 20);
+                if (entry.getValue().isConnected()) {
+                    AffineTransform af = new AffineTransform();
+                    af.translate(
+                            (int) entry.getValue().getLocation().getX() + 16 - player.getPlayerSkin().getWidth() / 2,
+                            (int) entry.getValue().getLocation().getY() + 12 - player.getPlayerSkin().getHeight() / 2);
+                    g2d.drawImage(player.getPlayerSkin(), af, null);
+                    g2d.setColor(Color.WHITE);
+                    g2d.drawString(entry.getKey(), (int) entry.getValue().getLocation().getX(), (int) entry.getValue().getLocation().getY() - 20);
+                }
             }
             g2d.setFont(new Font("Arial", Font.PLAIN, 14));
             AffineTransform af = new AffineTransform();
