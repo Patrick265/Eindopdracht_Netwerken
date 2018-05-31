@@ -1,8 +1,10 @@
 package server.logic;
 
+import game.NPC.Enemy;
 import game.character.Player;
 import server.presentation.ServerFrame;
 
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Inet4Address;
@@ -15,6 +17,12 @@ public class Server implements Runnable, Serializable
 {
     private ArrayList<ClientHandler> clients = new ArrayList<>();
     private Map<String, Player> players = new HashMap<>();
+    private ArrayList<Enemy> monsters = new ArrayList<>();
+
+    public Server()
+    {
+        createMonster();
+    }
 
     @Override
     public void run()
@@ -44,6 +52,19 @@ public class Server implements Runnable, Serializable
         {
             e.printStackTrace();
         }
+    }
+
+    private void createMonster()
+    {
+        for(int i = 1; i < 10; i++)
+        {
+            this.monsters.add(new Enemy("Skeleton", 15, 0.5, new Point2D.Double(Math.random() * 2000, Math.random() * 2000), true));
+        }
+    }
+
+    public List<Enemy> getMonsters()
+    {
+        return monsters;
     }
 
     public ArrayList<ClientHandler> getClients()

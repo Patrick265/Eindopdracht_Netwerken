@@ -1,5 +1,6 @@
 package game;
 
+import game.NPC.Enemy;
 import game.character.Player;
 
 import javax.swing.*;
@@ -7,13 +8,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataReceiver implements Runnable
 {
     private Socket socket;
     private Map<String, Player> players;
+    private ArrayList<Enemy> enemies;
     private JPanel jpanel;
 
     public DataReceiver(Socket socket, JPanel jpanel)
@@ -30,10 +34,10 @@ public class DataReceiver implements Runnable
             System.out.println("Entered in DataReciever" + "\n" + "-------------------------------");
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 
-            while (true) {
-
-                Player player = (Player) objectInputStream.readObject();
-                players.put(player.getName(), player);
+            while (true)
+            {
+                this.players = (Map<String, Player>) objectInputStream.readObject();
+                this.enemies = (ArrayList<Enemy>) objectInputStream.readObject();
                 jpanel.repaint();
 
 
@@ -44,6 +48,11 @@ public class DataReceiver implements Runnable
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<Enemy> getEnemies()
+    {
+        return enemies;
     }
 
     public Map<String, Player> getPlayers()

@@ -1,5 +1,6 @@
 package game;
 
+import game.NPC.Enemy;
 import game.character.Player;
 import game.map.TiledMap;
 import presentation.views.LoginView;
@@ -7,16 +8,16 @@ import presentation.views.LoginView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Map;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
     private int counter;
     private Player player;
+    private Enemy enemy;
     private ObjectOutputStream toServer;
     private DataReceiver dataReceiver;
     private Socket socket;
@@ -27,6 +28,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         super.setFocusable(true);
         this.counter = 0;
         player = new Player(new Point(200,200), LoginView.getUsername(),true);
+        this.enemy = new Enemy("Dummy", 10,1,new Point2D.Double(200,200), true);
         addKeyListener(this);
 
         try
@@ -55,32 +57,12 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         TiledMap map = new TiledMap("res/map/map.json");
         g2d.setFont(new Font("Arial", Font.PLAIN, 16));
         map.debugDraw(g2d);
-
-        for(Map.Entry<String, Player> entry : this.dataReceiver.getPlayers().entrySet()) {
-            if (entry.getValue() != null) {
-                if (entry.getValue().isConnected()) {
-                    AffineTransform af = new AffineTransform();
-                    af.translate(
-                            (int) entry.getValue().getLocation().getX() + 16 - player.getPlayerSkin().getWidth() / 2,
-                            (int) entry.getValue().getLocation().getY() + 12 - player.getPlayerSkin().getHeight() / 2);
-                    g2d.drawImage(player.getPlayerSkin(), af, null);
-                    g2d.setColor(Color.WHITE);
-                    g2d.drawString(entry.getKey(), (int) entry.getValue().getLocation().getX(), (int) entry.getValue().getLocation().getY() - 20);
-                }
-            }
-            g2d.setFont(new Font("Arial", Font.PLAIN, 14));
-            AffineTransform af = new AffineTransform();
-            af.translate(0,0);
-            g2d.drawString("Player count: " + String.valueOf(this.dataReceiver.getPlayers().size()), 25,25 );
-        }
+        player.draw(g2d, this.dataReceiver.getPlayers());
+        enemy.draw(g2d, this.dataReceiver);
     }
-
 
     @Override
-    public void keyTyped(KeyEvent e)
-    {
-
-    }
+    public void keyTyped(KeyEvent e) { }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -97,9 +79,11 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             case KeyEvent.VK_A:
                 this.player.setLocation((int) this.player.getLocation().getX() - 4, (int) this.player.getLocation().getY());
                 break;
+            case KeyEvent.VK_SPACE:
+                this.player.setAttacking(true);
         }
         try {
-            writeObject();
+            writePlayer();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -107,14 +91,21 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         }
 
     @Override
-    public void keyReleased(KeyEvent e)
-    {
-
+    public void keyReleased(KeyEvent e) {
+        this.player.setAttacking(false);
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        player.update(this.dataReceiver.getEnemies());
+        for(int i = 0; i < this.dataReceiver.getEnemies().size(); i++)
+        {
+            if(this.dataReceiver.getEnemies().get(i).getHitpoints() < 15)
+            {
+                System.out.println(this.dataReceiver.getEnemies().get(i).toString() );
+            }
+        }
         repaint();
     }
 
@@ -133,7 +124,12 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         toServer.reset();
     }
 
-    private void writeObject() throws IOException
+    private void writeEnemy() throws IOException
+    {
+        toServer.writeObject(this.dataReceiver.getEnemies());
+        toServer.reset();
+    }
+    private void writePlayer() throws IOException
     {
         toServer.writeObject(this.player.getLocation());
         toServer.reset();

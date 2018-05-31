@@ -1,5 +1,6 @@
 package server.logic;
 
+import game.NPC.Enemy;
 import game.character.Player;
 
 import javax.swing.*;
@@ -86,11 +87,13 @@ class DataTransmit implements Runnable
             ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
             outputToClientObject.flush();
             while (true) {
-                for (Map.Entry<String, Player> entry : server.getPlayers().entrySet()) {
-                    outputToClientObject.writeObject(entry.getValue());
-                    outputToClientObject.reset();
-                }
+
+                outputToClientObject.writeObject(server.getPlayers());
+                outputToClientObject.reset();
                 Thread.sleep(10);
+                outputToClientObject.writeObject(server.getMonsters());
+                outputToClientObject.reset();
+
             }
         }
         catch(SocketException e) {
