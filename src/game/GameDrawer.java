@@ -66,6 +66,10 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
                 g2d.setColor(Color.WHITE);
                 g2d.drawString(entry.getKey(), (int) entry.getValue().getLocation().getX(), (int) entry.getValue().getLocation().getY() - 20);
             }
+            g2d.setFont(new Font("Arial", Font.PLAIN, 14));
+            AffineTransform af = new AffineTransform();
+            af.translate(0,0);
+            g2d.drawString("Player count: " + String.valueOf(this.dataReceiver.getPlayers().size()), 25,25 );
         }
     }
 
