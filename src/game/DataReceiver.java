@@ -2,6 +2,7 @@ package game;
 
 import game.NPC.Enemy;
 import game.character.Player;
+import presentation.IntroFrame;
 import server.logic.ServerPKG;
 
 import javax.swing.*;
@@ -48,12 +49,11 @@ public class DataReceiver implements Runnable
                 this.players = pkg.getPlayers();
                 this.enemies.addAll(pkg.getEnemies());
                 this.mutex.release();
-                System.out.println(this.enemies.size());
 
-                    //jpanel.repaint();
             }
         } catch (SocketException e) {
-            System.out.println("User disconnected");
+            JOptionPane.showMessageDialog(null,"Server has closed!");
+            System.exit(1);
         } catch (IOException | ClassNotFoundException  e) {
             e.printStackTrace();
         } catch (InterruptedException e)

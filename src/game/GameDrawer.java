@@ -65,7 +65,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             player.draw(g2d, this.dataReceiver.getPlayers());
             if (this.dataReceiver.getEnemies().size() > 0)
             {
-                System.out.println("Drawing enemies");
                 enemy.draw(g2d, this.dataReceiver);
             }
         }
