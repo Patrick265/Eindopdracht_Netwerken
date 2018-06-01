@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 public class DataReceiver implements Runnable
 {
@@ -20,6 +22,7 @@ public class DataReceiver implements Runnable
     private Map<String, Player> players;
     private ArrayList<Enemy> enemies;
     private JPanel jpanel;
+    private Semaphore mutex = new Semaphore(1);
 
     public DataReceiver(Socket socket, JPanel jpanel)
     {
@@ -39,13 +42,15 @@ public class DataReceiver implements Runnable
 
             while (true)
             {
-                this.enemies.clear();
                 ServerPKG pkg = (ServerPKG) objectInputStream.readObject();
+                this.mutex.tryAcquire(100,TimeUnit.MILLISECONDS);
+                this.enemies.clear();
                 this.players = pkg.getPlayers();
                 this.enemies.addAll(pkg.getEnemies());
-                jpanel.repaint();
+                this.mutex.release();
+                System.out.println(this.enemies.size());
 
-
+                    //jpanel.repaint();
             }
         } catch (SocketException e) {
             System.out.println("User disconnected");
@@ -55,8 +60,13 @@ public class DataReceiver implements Runnable
         {
             e.printStackTrace();
         }
+        finally
+        {
+            this.mutex.release();
+        }
 
     }
+
 
     public ArrayList<Enemy> getEnemies()
     {
@@ -66,5 +76,10 @@ public class DataReceiver implements Runnable
     public Map<String, Player> getPlayers()
     {
         return players;
+    }
+
+    public Semaphore getMutex()
+    {
+        return mutex;
     }
 }

@@ -56,7 +56,8 @@ public class Player implements Serializable
 
     public void update(ArrayList<Enemy> enemies)
     {
-        for (Enemy enemy : enemies)
+        ArrayList<Enemy> enemyArrayList = enemies;
+        for (Enemy enemy : enemyArrayList)
         {
             if(getLocation().distance(enemy.getLocation()) < 75 && attacking)
             {

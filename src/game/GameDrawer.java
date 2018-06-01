@@ -53,15 +53,22 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     @Override
     protected void paintComponent(Graphics g)
     {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
+        synchronized (this)
+        {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
 
 
-        TiledMap map = new TiledMap("res/map/map.json");
-        g2d.setFont(new Font("Arial", Font.PLAIN, 16));
-        map.debugDraw(g2d);
-        player.draw(g2d, this.dataReceiver.getPlayers());
-        enemy.draw(g2d, this.dataReceiver.getEnemies());
+            TiledMap map = new TiledMap("res/map/map.json");
+            g2d.setFont(new Font("Arial", Font.PLAIN, 16));
+            map.debugDraw(g2d);
+            player.draw(g2d, this.dataReceiver.getPlayers());
+            if (this.dataReceiver.getEnemies().size() > 0)
+            {
+                System.out.println("Drawing enemies");
+                enemy.draw(g2d, this.dataReceiver);
+            }
+        }
     }
 
     @Override
