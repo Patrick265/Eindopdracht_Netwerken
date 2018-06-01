@@ -72,13 +72,21 @@ public class Player implements Serializable
         {
             dataReceiver.getMutex().tryAcquire(100, TimeUnit.MILLISECONDS);
             enemyArrayList = dataReceiver.getEnemies();
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            dataReceiver.getMutex().release();
+        }
 
         for (Enemy enemy : enemyArrayList)
         {
             if(getLocation().distance(enemy.getLocation()) < 75 && attacking)
             {
                 this.attackedEnemy = enemy;
-                this.dealtDamage = (int)(Math.random() * 10);
+                this.dealtDamage = 1;
                 try
                 {
                     gameDrawer.writeEntities();
@@ -87,18 +95,6 @@ public class Player implements Serializable
                     e.printStackTrace();
                 }
             }
-            else {
-                this.attackedEnemy = null;
-                this.dealtDamage = 0;
-            }
-        }
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            dataReceiver.getMutex().release();
         }
 
 
