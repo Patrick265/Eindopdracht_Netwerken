@@ -15,6 +15,16 @@ public class Skills implements Serializable{
 
     }
 
+    @Override
+    public String toString()
+    {
+        return "Skills{" +
+                "attack=" + attack +
+                ", strength=" + strength +
+                ", hitpoints=" + hitpoints +
+                '}';
+    }
+
     public Attack getAttack() {
         return attack;
     }

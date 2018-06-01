@@ -102,7 +102,7 @@ public class Enemy implements Serializable
                 ", location=" + location +
                 ", npcSkin=" + npcSkin +
                 ", isAlive=" + isAlive +
-                ", skills=" + skills +
+                ", skills=" + skills.toString() +
                 '}';
     }
 }

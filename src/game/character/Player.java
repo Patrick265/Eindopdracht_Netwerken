@@ -58,22 +58,14 @@ public class Player implements Serializable
     {
         for (Enemy enemy : enemies)
         {
-
             if(getLocation().distance(enemy.getLocation()) < 75 && attacking)
             {
                 System.out.println("BEFORE: " + enemy);
-                enemy.getSkills().getHitpoints().setLevel(enemy.getSkills().getHitpoints().getLevel() - 1);
+                enemy.getSkills().getHitpoints().setHealth(enemy.getSkills().getHitpoints().getLevel() - 1);
                 System.out.println("AFTER: " + enemy);
             }
         }
     }
-
-//    public int[] dealDamage()
-//    {
-//        int[] hitsPossible = {0, strenght};
-//        return hitsPossible;
-//    }
-
 
     public Point getLocation()
     {

@@ -34,7 +34,6 @@ public class ClientHandler implements Runnable
 
             while (true) {
                 ClientPKG pkg = (ClientPKG) inputFromClientObject.readObject();
-                System.out.println(pkg.toStringPlayers());
                 Point currentPos = pkg.getPlayer().getLocation();
                 player.setLocation(
                         (int)currentPos.getX(),

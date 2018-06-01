@@ -58,7 +58,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         g2d.setFont(new Font("Arial", Font.PLAIN, 16));
         map.debugDraw(g2d);
         player.draw(g2d, this.dataReceiver.getPlayers());
-        //enemy.draw(g2d, this.dataReceiver.getEnemies());
+        enemy.draw(g2d, this.dataReceiver.getEnemies());
     }
 
     @Override
@@ -66,7 +66,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("Key pressed");
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W:
                 this.player.setLocation((int) this.player.getLocation().getX(), (int) this.player.getLocation().getY() - 4);
@@ -119,8 +118,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     }
     private void writeEntities() throws IOException
     {
-        ClientPKG pkg = new ClientPKG(this.player, this.dataReceiver.getEnemies());
-        System.out.println(pkg.toStringPlayers());
         toServer.writeObject(new ClientPKG(this.player, this.dataReceiver.getEnemies()));
         toServer.reset();
 
