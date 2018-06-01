@@ -51,14 +51,6 @@ public class Enemy implements Serializable
         {
             dataReceiver.getMutex().tryAcquire(100, TimeUnit.MILLISECONDS);
             enemyArrayList = dataReceiver.getEnemies();
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            dataReceiver.getMutex().release();
-        }
 
         for(Enemy enemy : enemyArrayList)
         {
@@ -71,6 +63,14 @@ public class Enemy implements Serializable
             g2d.drawString( enemy.getName(),
                     (int) enemy.getLocation().getX(),
                     (int) enemy.getLocation().getY() - 20);
+        }
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            dataReceiver.getMutex().release();
         }
     }
 
@@ -96,7 +96,11 @@ public class Enemy implements Serializable
     }
     public boolean isAlive()
     {
-        return isAlive;
+        if(this.getSkills().getHitpoints().getHealth() > 0)
+        {
+            return true;
+        }
+        return false;
     }
     public void setAlive(boolean alive)
     {

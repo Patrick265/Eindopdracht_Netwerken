@@ -37,7 +37,6 @@ public class Server implements Runnable, Serializable
             int clientNR = 1;
             while (true)
             {
-
                 Socket socket = serverSocket.accept();
                 frame.getTextArea().append(frame.standardClientText(socket.getInetAddress()));
                 ClientHandler clientHandler = new ClientHandler(socket, clientNR, frame.getTextArea(), this);
@@ -56,20 +55,22 @@ public class Server implements Runnable, Serializable
 
     public void update(Player player)
     {
-        for(Enemy enemy : monsters)
-        {
-            if(player.getAttackedEnemy() != null)
-            {
+        if(player.getAttackedEnemy() != null)
+        { {
                 System.out.println("DEALT DAMAGE: " + player.getDealtDamage());
-                System.out.println("HEALTH BEFORE: " + enemy.getSkills().getHitpoints().getHealth());
-                enemy.getSkills().getHitpoints().setHealth(enemy.getSkills().getHitpoints().getHealth() - player.getDealtDamage());
-                System.out.println("HEALTH AFTER: " + enemy.getSkills().getHitpoints().getHealth());
-            }
+                System.out.println("HEALTH BEFORE: " + player.getAttackedEnemy().getSkills().getHitpoints().getHealth());
+            player.getAttackedEnemy().getSkills().getHitpoints().setHealth(player.getAttackedEnemy().getSkills().getHitpoints().getHealth() - player.getDealtDamage());
+                System.out.println("HEALTH AFTER: " + player.getAttackedEnemy().getSkills().getHitpoints().getHealth());
+                if (!player.getAttackedEnemy().isAlive()) {
+                    monsters.remove(player.getAttackedEnemy());
+                }
+        }
         }
     }
 
     private void createMonster()
     {
+        this.monsters.add(new Enemy("Skeleton",20,1,new Point2D.Double(200,200),true));
         for(int i = 1; i < 10; i++)
         {
             this.monsters.add(new Enemy("Skeleton", 15, 1, new Point2D.Double(Math.random() * 600, Math.random() * 600), true));

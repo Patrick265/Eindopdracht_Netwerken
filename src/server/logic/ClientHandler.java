@@ -1,6 +1,7 @@
 package server.logic;
 
 import game.ClientPKG;
+import game.NPC.Enemy;
 import game.character.Player;
 
 import javax.swing.*;
@@ -34,18 +35,18 @@ public class ClientHandler implements Runnable
 
             while (true) {
                 ClientPKG pkg = (ClientPKG) inputFromClientObject.readObject();
-                System.out.println(pkg.getPlayer().toString());
                 Point currentPos = pkg.getPlayer().getLocation();
                 player.setLocation(
                         (int)currentPos.getX(),
                         (int)currentPos.getY());
-                player.setAttackedEnemy(pkg.getPlayer().getAttackedEnemy());
-                player.setDealtDamage(pkg.getPlayer().getDealtDamage());
-                this.server.update(player);
+                Enemy enemy = pkg.getPlayer().getAttackedEnemy();
+                player.setAttackedEnemy(enemy);
+                int damage = pkg.getPlayer().getDealtDamage();
+                System.out.println(damage);
+                player.setDealtDamage(damage);
+                this.server.update(this.player);
                 Thread.sleep(10);
             }
-
-
 
         } catch (SocketException e)
         {
@@ -87,7 +88,7 @@ class DataTransmit implements Runnable
     public void run() {
         try {
             ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
-            outputToClientObject.flush();
+            outputToClientObject.reset();
             while (true) {
                 outputToClientObject.writeObject(new ServerPKG(this.server.getPlayers(), this.server.getMonsters()));
                 outputToClientObject.reset();
