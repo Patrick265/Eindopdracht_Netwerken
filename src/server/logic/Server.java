@@ -54,11 +54,25 @@ public class Server implements Runnable, Serializable
         }
     }
 
+    public void update(Player player)
+    {
+        for(Enemy enemy : monsters)
+        {
+            if(player.getAttackedEnemy() != null)
+            {
+                System.out.println("DEALT DAMAGE: " + player.getDealtDamage());
+                System.out.println("HEALTH BEFORE: " + enemy.getSkills().getHitpoints().getHealth());
+                enemy.getSkills().getHitpoints().setHealth(enemy.getSkills().getHitpoints().getHealth() - player.getDealtDamage());
+                System.out.println("HEALTH AFTER: " + enemy.getSkills().getHitpoints().getHealth());
+            }
+        }
+    }
+
     private void createMonster()
     {
         for(int i = 1; i < 10; i++)
         {
-            this.monsters.add(new Enemy("Skeleton", 15, 1, new Point2D.Double(Math.random() * 2000, Math.random() * 2000), true));
+            this.monsters.add(new Enemy("Skeleton", 15, 1, new Point2D.Double(Math.random() * 600, Math.random() * 600), true));
         }
     }
 

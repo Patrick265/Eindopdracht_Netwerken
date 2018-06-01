@@ -27,6 +27,7 @@ public class Enemy implements Serializable
         this.name = name;
         skills = new Skills();
         skills.getHitpoints().setLevel(hitpoints);
+        skills.getHitpoints().setHealth(hitpoints);
         skills.getStrength().setLevel(strength);
         this.location = location;
         this.isAlive = isAlive;
@@ -59,17 +60,17 @@ public class Enemy implements Serializable
             dataReceiver.getMutex().release();
         }
 
-        for(int i = 0; i < enemyArrayList.size(); i++)
+        for(Enemy enemy : enemyArrayList)
         {
             AffineTransform af = new AffineTransform();
             af.translate(
-                    (int) enemyArrayList.get(i).getLocation().getX() + 16 - this.getNpcSkin().getWidth() / 2,
-                    (int) enemyArrayList.get(i).getLocation().getY() + 12 - this.getNpcSkin().getHeight() / 2);
+                    (int) enemy.getLocation().getX() + 16 - this.getNpcSkin().getWidth() / 2,
+                    (int) enemy.getLocation().getY() + 12 - this.getNpcSkin().getHeight() / 2);
             g2d.drawImage(this.getNpcSkin(), af, null);
             g2d.setColor(Color.WHITE);
-            g2d.drawString( enemyArrayList.get(i).getName(),
-                          (int) enemyArrayList.get(i).getLocation().getX(),
-                        (int) enemyArrayList.get(i).getLocation().getY() - 20);
+            g2d.drawString( enemy.getName(),
+                    (int) enemy.getLocation().getX(),
+                    (int) enemy.getLocation().getY() - 20);
         }
     }
 

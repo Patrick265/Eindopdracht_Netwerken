@@ -1,5 +1,7 @@
 package game.character;
 
+import game.DataReceiver;
+import game.GameDrawer;
 import game.NPC.Enemy;
 import game.skills.Attack;
 import game.skills.Skills;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Player implements Serializable
 {
@@ -23,6 +26,8 @@ public class Player implements Serializable
     private transient BufferedImage playerSkin;
     private boolean attacking;
     private Skills skill;
+    private Enemy attackedEnemy;
+    private int dealtDamage;
 
     public Player(Point location, String username,boolean isConnected) {
         this.location = location;
@@ -35,6 +40,9 @@ public class Player implements Serializable
         }
         this.attacking = false;
         skill = new Skills();
+
+        this.attackedEnemy = null;
+        this.dealtDamage = 0;
     }
 
     public void draw(Graphics2D g2d, Map<String, Player> players)
@@ -54,18 +62,42 @@ public class Player implements Serializable
         }
     }
 
-    public void update(ArrayList<Enemy> enemies)
+    public void update(DataReceiver dataReceiver, GameDrawer gameDrawer)
     {
-        ArrayList<Enemy> enemyArrayList = enemies;
+        this.dealtDamage = 0;
+
+        ArrayList<Enemy> enemyArrayList = new ArrayList<>();
+
+        try
+        {
+            dataReceiver.getMutex().tryAcquire(100, TimeUnit.MILLISECONDS);
+            enemyArrayList = dataReceiver.getEnemies();
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            dataReceiver.getMutex().release();
+        }
+
         for (Enemy enemy : enemyArrayList)
         {
             if(getLocation().distance(enemy.getLocation()) < 75 && attacking)
             {
-                System.out.println("BEFORE: " + enemy);
-                enemy.getSkills().getHitpoints().setHealth(enemy.getSkills().getHitpoints().getLevel() - 1);
-                System.out.println("AFTER: " + enemy);
+                this.attackedEnemy = enemy;
+                this.dealtDamage = 1;
+                try
+                {
+                    gameDrawer.writeEntities();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
+
+
     }
 
     public Point getLocation()
@@ -79,15 +111,35 @@ public class Player implements Serializable
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Player{" +
                 "location=" + location +
                 ", name='" + name + '\'' +
-                ", isConnected=" + isConnected +
-                ", playerSkin=" + playerSkin +
                 ", attacking=" + attacking +
-                ", skill=" + skill +
+                ", dealtDamage=" + dealtDamage +
+                ", attackedEnemy=" + attackedEnemy +
                 '}';
+    }
+
+    public boolean isAttacking()
+    {
+        return attacking;
+    }
+
+    public void setDealtDamage(int dealtDamage)
+    {
+        this.dealtDamage = dealtDamage;
+    }
+
+    public Enemy getAttackedEnemy()
+    {
+        return attackedEnemy;
+    }
+
+    public int getDealtDamage()
+    {
+        return dealtDamage;
     }
 
     public String getName()
@@ -115,5 +167,10 @@ public class Player implements Serializable
     public void setAttacking(boolean attacking)
     {
         this.attacking = attacking;
+    }
+
+    public void setAttackedEnemy(Enemy attackedEnemy)
+    {
+        this.attackedEnemy = attackedEnemy;
     }
 }

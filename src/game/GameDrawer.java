@@ -88,7 +88,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             case KeyEvent.VK_A:
                 this.player.setLocation((int) this.player.getLocation().getX() - 4, (int) this.player.getLocation().getY());
                 break;
-            case KeyEvent.VK_SPACE:
+                case KeyEvent.VK_SPACE:
                 this.player.setAttacking(true);
         }
         try {
@@ -102,12 +102,18 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     @Override
     public void keyReleased(KeyEvent e) {
         this.player.setAttacking(false);
+        System.out.println(this.player.isAttacking());
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        player.update(this.dataReceiver.getEnemies());
+
+        player.update(this.dataReceiver, this);
+        if(player.getAttackedEnemy() != null)
+        {
+            System.out.println("got enemy");
+        }
         repaint();
     }
 
@@ -125,7 +131,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         toServer.writeObject(this.player);
         toServer.reset();
     }
-    private void writeEntities() throws IOException
+    public void writeEntities() throws IOException
     {
         toServer.writeObject(new ClientPKG(this.player));
         toServer.reset();
