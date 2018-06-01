@@ -1,6 +1,9 @@
 package game.character;
 
 import game.NPC.Enemy;
+import game.skills.Attack;
+import game.skills.Skills;
+import game.skills.Strength;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,9 +21,8 @@ public class Player implements Serializable
     private String name;
     private boolean isConnected;
     private transient BufferedImage playerSkin;
-    private int hitpoints;
-    private int strenght;
     private boolean attacking;
+    private Skills skill;
 
     public Player(Point location, String username,boolean isConnected) {
         this.location = location;
@@ -31,9 +33,8 @@ public class Player implements Serializable
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.hitpoints = 10;
-        this.strenght = 1;
         this.attacking = false;
+        skill = new Skills();
     }
 
     public void draw(Graphics2D g2d, Map<String, Player> players)
@@ -61,28 +62,18 @@ public class Player implements Serializable
             if(getLocation().distance(enemy.getLocation()) < 75 && attacking)
             {
                 System.out.println("BEFORE: " + enemy);
-                enemy.setHitpoints(enemy.getHitpoints()-1);
+                enemy.getSkills().getHitpoints().setLevel(enemy.getSkills().getHitpoints().getLevel() - 1);
                 System.out.println("AFTER: " + enemy);
             }
         }
     }
 
-    public int[] dealDamage()
-    {
-        int[] hitsPossible = {0, strenght};
-        return hitsPossible;
-    }
+//    public int[] dealDamage()
+//    {
+//        int[] hitsPossible = {0, strenght};
+//        return hitsPossible;
+//    }
 
-
-    public void setHitpoints(int hitpoints)
-    {
-        this.hitpoints = hitpoints;
-    }
-
-    public int getHitpoints()
-    {
-        return hitpoints;
-    }
 
     public Point getLocation()
     {
@@ -95,15 +86,14 @@ public class Player implements Serializable
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Player{" +
                 "location=" + location +
                 ", name='" + name + '\'' +
                 ", isConnected=" + isConnected +
                 ", playerSkin=" + playerSkin +
-                ", hitpoints=" + hitpoints +
-                ", strenght=" + strenght +
+                ", attacking=" + attacking +
+                ", skill=" + skill +
                 '}';
     }
 
@@ -125,19 +115,8 @@ public class Player implements Serializable
         isConnected = connected;
     }
 
-    public int getStrenght()
-    {
-        return strenght;
-    }
-
-    public boolean isAttacking()
-    {
-        return attacking;
-    }
-
-    public void setStrenght(int strenght)
-    {
-        this.strenght = strenght;
+    public Skills getSkill() {
+        return skill;
     }
 
     public void setAttacking(boolean attacking)

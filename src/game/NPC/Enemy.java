@@ -1,6 +1,7 @@
 package game.NPC;
 
 import game.DataReceiver;
+import game.skills.Skills;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,17 +16,17 @@ import java.util.ArrayList;
 public class Enemy implements Serializable
 {
     private final String name;
-    private int hitpoints;
-    private final double strength;
     private Point2D location;
     private transient BufferedImage npcSkin;
     private boolean isAlive;
+    private Skills skills;
 
-    public Enemy(String name, int hitpoints, double strength, Point2D location, boolean isAlive)
+    public Enemy(String name, int hitpoints, int strength, Point2D location, boolean isAlive)
     {
         this.name = name;
-        this.hitpoints = hitpoints;
-        this.strength = strength;
+        skills = new Skills();
+        skills.getHitpoints().setLevel(hitpoints);
+        skills.getStrength().setLevel(strength);
         this.location = location;
         this.isAlive = isAlive;
         try {
@@ -61,18 +62,6 @@ public class Enemy implements Serializable
     {
         return name;
     }
-    public int getHitpoints()
-    {
-        return hitpoints;
-    }
-    public void setHitpoints(int hitpoints)
-    {
-        this.hitpoints = hitpoints;
-    }
-    public double getStrength()
-    {
-        return strength;
-    }
     public Point2D getLocation()
     {
         return location;
@@ -97,16 +86,23 @@ public class Enemy implements Serializable
     {
         isAlive = alive;
     }
+
+    public Skills getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Skills skills) {
+        this.skills = skills;
+    }
+
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Enemy{" +
                 "name='" + name + '\'' +
-                ", hitpoints=" + hitpoints +
-                ", strength=" + strength +
                 ", location=" + location +
                 ", npcSkin=" + npcSkin +
                 ", isAlive=" + isAlive +
+                ", skills=" + skills +
                 '}';
     }
 }
