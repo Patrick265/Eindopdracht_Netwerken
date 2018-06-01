@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class DataReceiver implements Runnable
 {
@@ -23,8 +24,8 @@ public class DataReceiver implements Runnable
     private Map<String, Player> players;
     private ArrayList<Enemy> enemies;
     private JPanel jpanel;
-    private Semaphore mutex = new Semaphore(1);
-
+    //private Semaphore mutex = new Semaphore(1);
+    private ReentrantLock lock;
     public DataReceiver(Socket socket, JPanel jpanel)
     {
         this.enemies = new ArrayList<>();
@@ -32,6 +33,7 @@ public class DataReceiver implements Runnable
         this.socket = socket;
         this.players = new HashMap<>();
         this.jpanel = jpanel;
+        this.lock = new ReentrantLock();
     }
 
     @Override
@@ -43,12 +45,20 @@ public class DataReceiver implements Runnable
 
             while (true)
             {
-                ServerPKG pkg = (ServerPKG) objectInputStream.readObject();
-                this.mutex.tryAcquire(100,TimeUnit.MILLISECONDS);
-                this.enemies.clear();
-                this.players = pkg.getPlayers();
-                this.enemies.addAll(pkg.getEnemies());
-                this.mutex.release();
+
+                try
+                {
+                    ServerPKG pkg = (ServerPKG) objectInputStream.readObject();
+                    //this.mutex.tryAcquire(100,TimeUnit.MILLISECONDS);
+                    lock.lock();
+                    this.enemies.clear();
+                    this.players = pkg.getPlayers();
+                    this.enemies.addAll(pkg.getEnemies());
+                    //this.mutex.release();
+                } finally
+                {
+                    lock.unlock();
+                }
 
             }
         } catch (SocketException e) {
@@ -56,13 +66,9 @@ public class DataReceiver implements Runnable
             System.exit(1);
         } catch (IOException | ClassNotFoundException  e) {
             e.printStackTrace();
-        } catch (InterruptedException e)
+        } finally
         {
-            e.printStackTrace();
-        }
-        finally
-        {
-            this.mutex.release();
+            //this.mutex.release();
         }
 
     }
@@ -70,7 +76,15 @@ public class DataReceiver implements Runnable
 
     public ArrayList<Enemy> getEnemies()
     {
-        return enemies;
+        ArrayList<Enemy> listofenemies = new ArrayList<>();
+        lock.lock();
+        try{
+            listofenemies.addAll(enemies);
+        }finally
+        {
+            lock.unlock();
+        }
+        return listofenemies;
     }
 
     public Map<String, Player> getPlayers()
@@ -78,8 +92,13 @@ public class DataReceiver implements Runnable
         return players;
     }
 
-    public Semaphore getMutex()
+    public ReentrantLock getLock()
     {
-        return mutex;
+        return lock;
     }
+
+    //    public Semaphore getMutex()
+//    {
+//        return mutex;
+//    }
 }

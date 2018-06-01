@@ -12,7 +12,6 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
@@ -30,7 +29,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
         this.counter = 0;
 
         this.player = new Player(new Point(200,200), LoginView.getUsername(),true);
-        this.enemy = new Enemy("Dummy", 10,1,new Point2D.Double(200,200), true);
+        this.enemy = new Enemy("Dummy", 10,1,new Point2D.Double(200,200), true, 0);
         addKeyListener(this);
 
         try
@@ -102,13 +101,11 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     @Override
     public void keyReleased(KeyEvent e) {
         this.player.setAttacking(false);
-        System.out.println(this.player.isAttacking());
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-
         player.update(this.dataReceiver, this);
         if(player.getAttackedEnemy() != null)
         {

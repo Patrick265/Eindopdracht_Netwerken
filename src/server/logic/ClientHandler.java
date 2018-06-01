@@ -1,6 +1,7 @@
 package server.logic;
 
 import game.ClientPKG;
+import game.NPC.Enemy;
 import game.character.Player;
 
 import javax.swing.*;
@@ -34,7 +35,6 @@ public class ClientHandler implements Runnable
 
             while (true) {
                 ClientPKG pkg = (ClientPKG) inputFromClientObject.readObject();
-                System.out.println(pkg.getPlayer().toString());
                 Point currentPos = pkg.getPlayer().getLocation();
                 player.setLocation(
                         (int)currentPos.getX(),
@@ -42,6 +42,7 @@ public class ClientHandler implements Runnable
                 player.setAttackedEnemy(pkg.getPlayer().getAttackedEnemy());
                 player.setDealtDamage(pkg.getPlayer().getDealtDamage());
                 this.server.update(player);
+
                 Thread.sleep(10);
             }
 

@@ -56,23 +56,34 @@ public class Server implements Runnable, Serializable
 
     public void update(Player player)
     {
-        for(Enemy enemy : monsters)
+        if(player.getAttackedEnemy() != null)
         {
-            if(player.getAttackedEnemy() != null)
+            player.getAttackedEnemy().getSkills().getHitpoints().setHealth(player.getAttackedEnemy().getSkills().getHitpoints().getHealth() - player.getDealtDamage());
+            for(Enemy enemy : monsters)
             {
-                System.out.println("DEALT DAMAGE: " + player.getDealtDamage());
-                System.out.println("HEALTH BEFORE: " + enemy.getSkills().getHitpoints().getHealth());
-                enemy.getSkills().getHitpoints().setHealth(enemy.getSkills().getHitpoints().getHealth() - player.getDealtDamage());
-                System.out.println("HEALTH AFTER: " + enemy.getSkills().getHitpoints().getHealth());
+                if(player.getAttackedEnemy().getId() == enemy.getId())
+                {
+                    enemy.getSkills().getHitpoints().setHealth(player.getAttackedEnemy().getSkills().getHitpoints().getHealth());
+                }
+            }
+            if (player.getAttackedEnemy().getSkills().getHitpoints().getHealth() <= 0)
+            {
+                for(Enemy enemy : monsters)
+                {
+                    if(player.getAttackedEnemy().getId() == enemy.getId())
+                    {
+                        enemy.setAlive(false);
+                    }
+                }
             }
         }
     }
 
     private void createMonster()
     {
-        for(int i = 1; i < 10; i++)
+        for(int i = 1; i < 3; i++)
         {
-            this.monsters.add(new Enemy("Skeleton", 15, 1, new Point2D.Double(Math.random() * 600, Math.random() * 600), true));
+            this.monsters.add(new Enemy("Skeleton", 15, 1, new Point2D.Double(Math.random() * 600, Math.random() * 600), true, i));
         }
     }
 
