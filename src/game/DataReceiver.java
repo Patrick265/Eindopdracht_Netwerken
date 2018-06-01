@@ -2,6 +2,7 @@ package game;
 
 import game.NPC.Enemy;
 import game.character.Player;
+import server.logic.ServerPKG;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -36,8 +37,9 @@ public class DataReceiver implements Runnable
 
             while (true)
             {
-                this.players = (Map<String, Player>) objectInputStream.readObject();
-                this.enemies = (ArrayList<Enemy>) objectInputStream.readObject();
+                ServerPKG pkg = (ServerPKG) objectInputStream.readObject();
+                this.players = pkg.getPlayers();
+                this.enemies = pkg.getEnemies();
                 jpanel.repaint();
 
 

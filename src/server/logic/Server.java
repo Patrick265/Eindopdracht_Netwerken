@@ -62,7 +62,7 @@ public class Server implements Runnable, Serializable
         }
     }
 
-    public List<Enemy> getMonsters()
+    public ArrayList<Enemy> getMonsters()
     {
         return monsters;
     }

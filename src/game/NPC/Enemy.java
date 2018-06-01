@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Enemy implements Serializable
 {
@@ -40,19 +41,19 @@ public class Enemy implements Serializable
     }
 
 
-    public void draw(Graphics2D g2d, DataReceiver dataReceiver)
+    public void draw(Graphics2D g2d, ArrayList<Enemy> enemies)
     {
-        for(int i = 0; i < dataReceiver.getEnemies().size(); i++)
+        for(int i = 0; i < enemies.size(); i++)
         {
             AffineTransform af = new AffineTransform();
             af.translate(
-                    (int) dataReceiver.getEnemies().get(i).getLocation().getX() + 16 - this.getNpcSkin().getWidth() / 2,
-                    (int) dataReceiver.getEnemies().get(i).getLocation().getY() + 12 - this.getNpcSkin().getHeight() / 2);
+                    (int) enemies.get(i).getLocation().getX() + 16 - this.getNpcSkin().getWidth() / 2,
+                    (int) enemies.get(i).getLocation().getY() + 12 - this.getNpcSkin().getHeight() / 2);
             g2d.drawImage(this.getNpcSkin(), af, null);
             g2d.setColor(Color.WHITE);
-            g2d.drawString( dataReceiver.getEnemies().get(i).getName(),
-                            (int) dataReceiver.getEnemies().get(i).getLocation().getX(),
-                            (int) dataReceiver.getEnemies().get(i).getLocation().getY() - 20);
+            g2d.drawString( enemies.get(i).getName(),
+                          (int) enemies.get(i).getLocation().getX(),
+                        (int) enemies.get(i).getLocation().getY() - 20);
         }
     }
 

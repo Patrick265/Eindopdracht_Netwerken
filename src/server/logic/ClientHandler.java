@@ -1,6 +1,6 @@
 package server.logic;
 
-import game.NPC.Enemy;
+import game.ClientPKG;
 import game.character.Player;
 
 import javax.swing.*;
@@ -8,7 +8,6 @@ import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Map;
 
 public class ClientHandler implements Runnable
 {
@@ -34,12 +33,15 @@ public class ClientHandler implements Runnable
             new Thread(dataTransmit).start();
 
             while (true) {
-                Point currentPos = (Point)
-                        inputFromClientObject.readObject();
+                ClientPKG pkg = (ClientPKG) inputFromClientObject.readObject();
+                System.out.println(pkg.toStringPlayers());
+                Point currentPos = pkg.getPlayer().getLocation();
                 player.setLocation(
                         (int)currentPos.getX(),
                         (int)currentPos.getY());
 
+                this.server.getMonsters().clear();
+                this.server.getMonsters().addAll(pkg.getEnemies());
                 Thread.sleep(10);
             }
 
@@ -88,12 +90,9 @@ class DataTransmit implements Runnable
             outputToClientObject.flush();
             while (true) {
 
-                outputToClientObject.writeObject(server.getPlayers());
+                outputToClientObject.writeObject(new ServerPKG(this.server.getPlayers(), this.server.getMonsters()));
                 outputToClientObject.reset();
                 Thread.sleep(10);
-                outputToClientObject.writeObject(server.getMonsters());
-                outputToClientObject.reset();
-
             }
         }
         catch(SocketException e) {
