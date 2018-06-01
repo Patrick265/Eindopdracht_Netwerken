@@ -9,27 +9,14 @@ import java.util.ArrayList;
 public class ClientPKG implements Serializable
 {
     private final Player player;
-    private final ArrayList<Enemy> enemies;
 
-    public ClientPKG(Player player, ArrayList<Enemy> enemies)
+    public ClientPKG(Player player)
     {
         this.player = player;
-        this.enemies = enemies;
     }
 
     public Player getPlayer()
     {
         return player;
     }
-
-    public ArrayList<Enemy> getEnemies()
-    {
-        return enemies;
-    }
-
-    public String toStringPlayers()
-    {
-        return player.getLocation().toString();
-    }
-
 }

@@ -39,8 +39,6 @@ public class ClientHandler implements Runnable
                         (int)currentPos.getX(),
                         (int)currentPos.getY());
 
-                this.server.getMonsters().clear();
-                this.server.getMonsters().addAll(pkg.getEnemies());
                 Thread.sleep(10);
             }
 
@@ -88,7 +86,6 @@ class DataTransmit implements Runnable
             ObjectOutputStream outputToClientObject = new ObjectOutputStream(socket.getOutputStream());
             outputToClientObject.flush();
             while (true) {
-
                 outputToClientObject.writeObject(new ServerPKG(this.server.getPlayers(), this.server.getMonsters()));
                 outputToClientObject.reset();
                 Thread.sleep(10);

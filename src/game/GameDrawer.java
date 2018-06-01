@@ -12,6 +12,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
@@ -27,7 +28,8 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     {
         super.setFocusable(true);
         this.counter = 0;
-        player = new Player(new Point(200,200), LoginView.getUsername(),true);
+
+        this.player = new Player(new Point(200,200), LoginView.getUsername(),true);
         this.enemy = new Enemy("Dummy", 10,1,new Point2D.Double(200,200), true);
         addKeyListener(this);
 
@@ -43,7 +45,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
         this.dataReceiver = new DataReceiver(this.socket,this);
         new Thread(this.dataReceiver).start();
-
         Timer timer = new Timer(1000/60,this);
         timer.start();
 
@@ -54,6 +55,8 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+
         TiledMap map = new TiledMap("res/map/map.json");
         g2d.setFont(new Font("Arial", Font.PLAIN, 16));
         map.debugDraw(g2d);
@@ -118,7 +121,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     }
     private void writeEntities() throws IOException
     {
-        toServer.writeObject(new ClientPKG(this.player, this.dataReceiver.getEnemies()));
+        toServer.writeObject(new ClientPKG(this.player));
         toServer.reset();
 
     }

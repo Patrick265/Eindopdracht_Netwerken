@@ -23,6 +23,8 @@ public class DataReceiver implements Runnable
 
     public DataReceiver(Socket socket, JPanel jpanel)
     {
+        this.enemies = new ArrayList<>();
+        this.players = new HashMap<>();
         this.socket = socket;
         this.players = new HashMap<>();
         this.jpanel = jpanel;
@@ -37,9 +39,10 @@ public class DataReceiver implements Runnable
 
             while (true)
             {
+                this.enemies.clear();
                 ServerPKG pkg = (ServerPKG) objectInputStream.readObject();
                 this.players = pkg.getPlayers();
-                this.enemies = pkg.getEnemies();
+                this.enemies.addAll(pkg.getEnemies());
                 jpanel.repaint();
 
 
@@ -47,6 +50,9 @@ public class DataReceiver implements Runnable
         } catch (SocketException e) {
             System.out.println("User disconnected");
         } catch (IOException | ClassNotFoundException  e) {
+            e.printStackTrace();
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
