@@ -1,6 +1,7 @@
 package game;
 
 import game.NPC.Enemy;
+import game.NPC.EnemyHealthComparator;
 import game.character.Player;
 import game.map.TiledMap;
 import presentation.views.LoginView;
@@ -12,6 +13,9 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
@@ -64,6 +68,18 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             g2d.setFont(new Font("Arial", Font.PLAIN, 16));
             map.debugDraw(g2d);
             player.draw(g2d, this.dataReceiver.getPlayers());
+            List<Enemy> enemies = new ArrayList<>(this.dataReceiver.getEnemies());
+            EnemyHealthComparator enemyHealthComparator = new EnemyHealthComparator();
+            Collections.sort(enemies,enemyHealthComparator);
+            int i = 0;
+            for(Enemy enemie : enemies)
+            {
+                g2d.drawString("Enemy health list",1000,15);
+                if(enemie.getSkills().getHitpoints().getHealth() > 0) {
+                    i++;
+                    g2d.drawString("Name: " + enemie.getName() + " ID: " + enemie.getId() + " health: " + enemie.getSkills().getHitpoints().getHealth() + "", 1000, 30 + (i * 15));
+                }
+            }
             if (this.dataReceiver.getEnemies().size() > 0)
             {
                 enemy.draw(g2d, this.dataReceiver);

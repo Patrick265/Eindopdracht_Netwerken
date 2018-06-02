@@ -30,7 +30,6 @@ public class DataReceiver implements Runnable
         this.enemies = new ArrayList<>();
         this.players = new HashMap<>();
         this.socket = socket;
-        this.players = new HashMap<>();
         this.jpanel = jpanel;
         this.lock = new ReentrantLock();
     }

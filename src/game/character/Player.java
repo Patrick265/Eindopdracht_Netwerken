@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class Player implements Serializable
+public class Player implements Serializable, Comparable<Player>
 {
     private Point location;
     private String name;
@@ -167,5 +167,10 @@ public class Player implements Serializable
     public void setAttackedEnemy(Enemy attackedEnemy)
     {
         this.attackedEnemy = attackedEnemy;
+    }
+
+    @Override
+    public int compareTo(Player o) {
+        return (this.getSkill().getStrength().getExperience() - o.getSkill().getStrength().getExperience());
     }
 }
