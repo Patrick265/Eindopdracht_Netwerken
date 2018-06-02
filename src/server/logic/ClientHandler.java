@@ -42,12 +42,8 @@ public class ClientHandler implements Runnable
                 player.setAttackedEnemy(pkg.getPlayer().getAttackedEnemy());
                 player.setDealtDamage(pkg.getPlayer().getDealtDamage());
                 this.server.update(player);
-
                 Thread.sleep(10);
             }
-
-
-
         } catch (SocketException e)
         {
             this.player.setConnected(false);

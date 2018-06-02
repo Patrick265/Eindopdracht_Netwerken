@@ -54,6 +54,9 @@ public class Enemy implements Serializable
                 g2d.drawString(enemy.getName(),
                         (int) enemy.getLocation().getX(),
                         (int) enemy.getLocation().getY() - 20);
+                g2d.drawString(enemy.getSkills().getHitpoints().getHealth() + "/" + enemy.getSkills().getHitpoints().getLevel(),
+                        (int)enemy.getLocation().getX(),
+                        (int)enemy.getLocation().getY()-35);
             }
        }
     }

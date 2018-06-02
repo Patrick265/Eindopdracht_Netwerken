@@ -24,7 +24,6 @@ public class DataReceiver implements Runnable
     private Map<String, Player> players;
     private ArrayList<Enemy> enemies;
     private JPanel jpanel;
-    //private Semaphore mutex = new Semaphore(1);
     private ReentrantLock lock;
     public DataReceiver(Socket socket, JPanel jpanel)
     {
@@ -43,34 +42,26 @@ public class DataReceiver implements Runnable
             System.out.println("Entered in DataReciever" + "\n" + "-------------------------------");
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 
-            while (true)
-            {
+            while (true) {
 
-                try
-                {
+                try {
                     ServerPKG pkg = (ServerPKG) objectInputStream.readObject();
-                    //this.mutex.tryAcquire(100,TimeUnit.MILLISECONDS);
                     lock.lock();
                     this.enemies.clear();
                     this.players = pkg.getPlayers();
                     this.enemies.addAll(pkg.getEnemies());
-                    //this.mutex.release();
-                } finally
-                {
+                } finally {
                     lock.unlock();
                 }
 
             }
         } catch (SocketException e) {
-            JOptionPane.showMessageDialog(null,"Server has closed!");
+            JOptionPane.showMessageDialog(null, "Server has closed!");
             System.exit(1);
-        } catch (IOException | ClassNotFoundException  e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally
-        {
-            //this.mutex.release();
-        }
 
+        }
     }
 
 

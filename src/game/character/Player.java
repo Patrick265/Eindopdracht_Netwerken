@@ -74,8 +74,7 @@ public class Player implements Serializable
             {
                 System.out.println("ENTERED");
                 this.attackedEnemy = enemy;
-                //this.dealtDamage = (int)(Math.random() * 10);
-                this.dealtDamage = 15;
+                this.dealtDamage = (getSkill().getStrength().getLevel() * 2) * (getSkill().getAttack().getLevel() * 2);
                 try
                 {
                     gameDrawer.writeEntities();
