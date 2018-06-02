@@ -1,8 +1,8 @@
 package presentation.views;
 
 import presentation.IntroFrame;
-import presentation.template.Colors;
-import presentation.template.Fonts;
+import template.Colors;
+import template.Fonts;
 
 import javax.swing.*;
 import java.awt.*;

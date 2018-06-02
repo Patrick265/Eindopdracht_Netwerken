@@ -21,12 +21,14 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     private ObjectOutputStream toServer;
     private DataReceiver dataReceiver;
     private Socket socket;
+    private HUD hud;
 
 
     public GameDrawer()
     {
         super.setFocusable(true);
         this.counter = 0;
+        this.hud = new HUD(this.player);
 
         this.player = new Player(new Point(200,200), LoginView.getUsername(),true);
         this.enemy = new Enemy("Dummy", 10,1,new Point2D.Double(200,200), true, 0);
@@ -66,6 +68,9 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             {
                 enemy.draw(g2d, this.dataReceiver);
             }
+
+            hud.draw(player, g2d, this);
+
         }
     }
 

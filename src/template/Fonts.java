@@ -1,4 +1,4 @@
-package presentation.template;
+package template;
 
 import java.awt.*;
 
