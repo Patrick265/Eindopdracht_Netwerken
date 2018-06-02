@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Enemy implements Serializable, Comparable<Enemy>
+public class Enemy implements Serializable
 {
     private final String name;
     private Point2D location;
@@ -114,8 +114,4 @@ public class Enemy implements Serializable, Comparable<Enemy>
         return id;
     }
 
-    @Override
-    public int compareTo(Enemy o) {
-        return this.getSkills().getHitpoints().getHealth() - o.getSkills().getHitpoints().getHealth();
-    }
 }

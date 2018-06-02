@@ -71,6 +71,17 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             List<Enemy> enemies = new ArrayList<>(this.dataReceiver.getEnemies());
             EnemyHealthComparator enemyHealthComparator = new EnemyHealthComparator();
             Collections.sort(enemies,enemyHealthComparator);
+
+            List<Player> playerList = new ArrayList<>(this.dataReceiver.getPlayers().values());
+            Collections.sort(playerList);
+            int j = 0;
+            for(Player playa: playerList)
+            {
+                g2d.drawString("Current online players:",800,15);
+                j++;
+                g2d.drawString(playa.getName() + "",900,30 + (j * 15));
+            }
+
             int i = 0;
             for(Enemy enemie : enemies)
             {

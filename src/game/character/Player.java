@@ -171,6 +171,7 @@ public class Player implements Serializable, Comparable<Player>
 
     @Override
     public int compareTo(Player o) {
-        return (this.getSkill().getStrength().getExperience() - o.getSkill().getStrength().getExperience());
+        int d = getName().compareTo(o.getName());
+        return d;
+        }
     }
-}
