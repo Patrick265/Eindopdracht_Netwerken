@@ -8,7 +8,6 @@ public class Settings
 {
     private int clientWidth;
     private int clientHeight;
-    private boolean audio;
 
     public Settings(int clientWidth, int clientHeight)
     {
@@ -28,7 +27,6 @@ public class Settings
         return "Settings{" +
                 "clientWidth=" + clientWidth +
                 ", clientHeight=" + clientHeight +
-                ", audio=" + audio +
                 '}';
     }
 
@@ -50,15 +48,5 @@ public class Settings
     public void setClientHeight(int clientHeight)
     {
         this.clientHeight = clientHeight;
-    }
-
-    public boolean isAudio()
-    {
-        return audio;
-    }
-
-    public void setAudio(boolean audio)
-    {
-        this.audio = audio;
     }
 }

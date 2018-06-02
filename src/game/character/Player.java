@@ -72,9 +72,12 @@ public class Player implements Serializable
         {
             if(getLocation().distance(enemy.getLocation()) < 75 && attacking)
             {
-                System.out.println("ENTERED");
                 this.attackedEnemy = enemy;
                 this.dealtDamage = (getSkill().getStrength().getLevel() * 2) * (getSkill().getAttack().getLevel() * 2);
+                skill.getStrength().addExperience(10);
+                skill.getAttack().addExperience(10);
+                System.out.println("ATTACK LEVEL: " + skill.getAttack().getLevel() + " EXP: " + skill.getAttack().getExperience());
+                System.out.println("STRENGTH LEVEL: " + skill.getStrength().getLevel() + " EXP: " + skill.getStrength().getExperience() );
                 try
                 {
                     gameDrawer.writeEntities();

@@ -23,14 +23,15 @@ public class Strength implements Serializable{
         }
     }
 
-    public int addExperience(int experience)
+    public void addExperience(int experience)
     {
-        return this.experience += experience;
+        this.experience += experience;
+        calculateLevel(this.experience);
     }
 
-    public int calculateLevel(int experience)
+    public void calculateLevel(int experience)
     {
-        return ((experience / 100)+1);
+        this.level = (experience / 100) + 1;
     }
 
     public int getLevel() {

@@ -83,7 +83,8 @@ public class Server implements Runnable, Serializable
     {
         for(int i = 1; i < 10; i++)
         {
-            this.monsters.add(new Enemy("Skeleton", (int)(Math.random() * 100), 1, new Point2D.Double(Math.random() * 600, Math.random() * 600), true, i));
+            Random random = new Random();
+            this.monsters.add(new Enemy("Skeleton",random.nextInt(100 + 1 - 10) + 10, 1, new Point2D.Double(Math.random() * 600, Math.random() * 600), true, i));
         }
     }
 
