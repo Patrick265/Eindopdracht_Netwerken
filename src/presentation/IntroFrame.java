@@ -1,10 +1,11 @@
 package presentation;
 
-import datamanager.ClientSettings;
+import datamanager.SettingsManager;
 import presentation.views.IntroView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class IntroFrame implements Runnable
 {
@@ -12,20 +13,13 @@ public class IntroFrame implements Runnable
     private JPanel mainPanel;
     private Dimension screensize;
     private String gameName;
-    private ClientSettings clientSettings;
+    private SettingsManager settingsManager;
 
     public IntroFrame(String gameName)
     {
         this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
         this.gameName = gameName;
-        this.clientSettings= ClientSettings.getInstance();
-    }
-
-    public IntroFrame()
-    {
-        this.screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.gameName = "";
-        this.clientSettings= ClientSettings.getInstance();
+        this.settingsManager = SettingsManager.getInstance();
     }
 
     @Override
@@ -49,7 +43,14 @@ public class IntroFrame implements Runnable
 
     public void setup()
     {
-        frame.setSize(800,600);
+        try
+        {
+            frame.setSize(  this.settingsManager.read().getClientWidth(),
+                            this.settingsManager.read().getClientHeight());
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 

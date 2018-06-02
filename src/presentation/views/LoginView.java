@@ -5,6 +5,7 @@ import presentation.IntroFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class LoginView extends JPanel
 {
@@ -27,7 +28,13 @@ public class LoginView extends JPanel
 
             address = this.ipField.getText();
             username = this.nameField.getText();
-            GameFrame launch = new GameFrame();
+            try
+            {
+                GameFrame launch = new GameFrame();
+            } catch (IOException e1)
+            {
+                e1.printStackTrace();
+            }
             IntroFrame.getFrame().dispose();
         });
         this.nameField.setPreferredSize(new Dimension(100,35));

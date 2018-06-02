@@ -1,9 +1,11 @@
 package launcher;
 
 import audio.AudioControl;
+import datamanager.SettingsManager;
 import presentation.IntroFrame;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  * @author Tom Martens, Patrick de Jong
@@ -14,23 +16,21 @@ public class Client
 
     public static void main(String[] args)
     {
-        new Client();
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | UnsupportedLookAndFeelException e)
+        {
+            e.printStackTrace();
+        }
+
+        IntroFrame frame = new IntroFrame("TreacherousMUD");
+        Thread frameThread = new Thread(frame);
+        frameThread.start();
     }
 
     public Client()
     {
-        try
-        {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e)
-        {
-            e.printStackTrace();
-        }
-        IntroFrame frame = new IntroFrame("TreacherousMUD");
-        AudioControl audio = new AudioControl("res/audio/background.wav");
-        Thread frameThread = new Thread(frame);
-        Thread audioThread = new Thread(audio);
 
-        frameThread.start();
     }
 }

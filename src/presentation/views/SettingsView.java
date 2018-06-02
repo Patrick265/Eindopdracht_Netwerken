@@ -1,6 +1,6 @@
 package presentation.views;
 
-import datamanager.ClientSettings;
+import datamanager.SettingsManager;
 import presentation.IntroFrame;
 import presentation.template.Colors;
 import presentation.template.Fonts;
@@ -20,9 +20,7 @@ public class SettingsView extends JPanel
     private List<Dimension> resolutions;
     private JLabel resolutionLabel;
     private JButton returnView;
-    private JLabel soundMute;
-    private JCheckBox soundMuteCheckBox;
-    private ClientSettings clientSettings;
+    private SettingsManager settingsManager;
 
     public SettingsView()
     {
@@ -42,19 +40,11 @@ public class SettingsView extends JPanel
         super.add(this.resolutionPullDown, gbc);
         gbc.gridy++;
         super.add(this.returnView, gbc);
-        gbc.gridy++;
-        super.add(this.soundMute);
-        gbc.gridx++;
-        super.add(this.soundMuteCheckBox);
-
     }
 
-    /**
-     * A method to initialise all of variables used, besides they are also styled and added listeners for it.
-     */
-    public void initialise()
+    private void initialise()
     {
-        this.clientSettings = ClientSettings.getInstance();
+        this.settingsManager = SettingsManager.getInstance();
         buildResolutions();
 
         this.resolutionLabel = new JLabel("Screen Resolution");
@@ -64,33 +54,35 @@ public class SettingsView extends JPanel
         for (int i = 0; i < this.resolutions.size(); i++)
         {
             resolutions[i] = "Width: " + this.resolutions.get(i).getWidth() +
-                    " Height: " + this.resolutions.get(i).getHeight();
+                             " Height: " + this.resolutions.get(i).getHeight();
         }
-
 
         this.resolutionPullDown = new JComboBox(resolutions);
         this.resolutionPullDown.setFont(Fonts.settings());
+
         this.resolutionPullDown.addActionListener(e ->
         {
             int width = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(7, 11));
             int height;
             if (this.resolutionPullDown.getSelectedItem().toString().substring(22).length() > 5)
             {
+                this.resolutionPullDown.setSelectedItem(this.resolutionPullDown.getSelectedItem());
                 height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 26));
             } else
             {
                 height = Integer.parseInt(this.resolutionPullDown.getSelectedItem().toString().substring(22, 25));
             }
             IntroFrame.getFrame().setSize(width, height);
-            this.clientSettings.getClientProperties().put("width", String.valueOf(width));
-            this.clientSettings.getClientProperties().put("height", String.valueOf(height));
+            this.settingsManager.getSettings().setClientWidth(width);
+            this.settingsManager.getSettings().setClientHeight(height);
             try
             {
-                this.clientSettings.write();
+                this.settingsManager.write();
             } catch (IOException e1)
             {
                 e1.printStackTrace();
             }
+
         });
 
         this.returnView = new JButton("Return");
@@ -106,40 +98,9 @@ public class SettingsView extends JPanel
             IntroFrame.getFrame().setContentPane(new IntroView());
             IntroFrame.getFrame().revalidate();
         });
-
-
-        this.soundMute = new JLabel("Music");
-        this.soundMute.setFont(Fonts.settings());
-
-        this.soundMuteCheckBox = new JCheckBox("");
-        this.soundMuteCheckBox.setFont(Fonts.settings());
-
-        if(clientSettings.getClientProperties().getProperty("audio").equals("true"))
-        {
-            this.soundMuteCheckBox.setSelected(true);
-        }
-        else {
-            this.soundMuteCheckBox.setSelected(false);
-        }
-
-        this.soundMuteCheckBox.addActionListener(e ->
-        {
-            this.clientSettings.getClientProperties().put("audio", String.valueOf(this.soundMuteCheckBox.isSelected()));
-            try
-            {
-                this.clientSettings.write();
-            } catch (IOException e1)
-            {
-                e1.printStackTrace();
-            }
-        });
     }
 
-    /**
-     * This method makes a list of resolutions we can use.
-     * <p>The type of these resolutions are dimensions so you can easily store with and height</p>
-     */
-    public void buildResolutions()
+    private void buildResolutions()
     {
         this.resolutions = new ArrayList<>();
         this.resolutions.add(new Dimension(1980,1080));
