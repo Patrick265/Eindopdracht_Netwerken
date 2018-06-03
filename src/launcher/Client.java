@@ -1,16 +1,8 @@
 package launcher;
 
-import audio.AudioControl;
-import datamanager.SettingsManager;
 import presentation.IntroFrame;
-
 import javax.swing.*;
-import java.io.IOException;
 
-/**
- * @author Tom Martens, Patrick de Jong
- * @since 23 April 2018
- */
 public class Client
 {
 

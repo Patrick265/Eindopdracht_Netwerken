@@ -8,9 +8,12 @@ public class Fonts
     {
         return new Font("Arial", Font.PLAIN, 24);
     }
-
     public static Font settings()
     {
         return new Font("Arial", Font.PLAIN, 18);
+    }
+    public static Font hud()
+    {
+        return new Font("Arial", Font.BOLD, 16);
     }
 }

@@ -2,6 +2,7 @@ package game;
 
 import game.character.Player;
 import template.Colors;
+import template.Fonts;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -48,7 +49,7 @@ public class HUD
         g2d.setColor(Colors.hudBackgroundBorder());
         g2d.draw(background);
         g2d.setColor(Colors.hudTextColor());
-        g2d.setFont(new Font("Arial", Font.BOLD, 16));
+        g2d.setFont(Fonts.hud());
 
         g2d.setColor(Color.BLACK);
 

@@ -29,10 +29,8 @@ public class IntroFrame implements Runnable
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.mainPanel = new JPanel(new BorderLayout());
         this.mainPanel.add(new IntroView(), BorderLayout.CENTER);
-
         frame.setContentPane(mainPanel);
         setup();
-
 
         frame.setLocation(  (int) (this.screensize.getWidth() / 2) - (frame.getWidth() / 2),
                             (int) (this.screensize.getHeight() / 2) - (frame.getHeight() / 2));
@@ -53,15 +51,8 @@ public class IntroFrame implements Runnable
         }
     }
 
-
-
     public static JFrame getFrame()
     {
         return frame;
-    }
-
-    public Dimension getScreenSize()
-    {
-        return screensize;
     }
 }

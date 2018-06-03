@@ -19,7 +19,6 @@ import java.util.List;
 
 public class GameDrawer extends JPanel implements KeyListener, ActionListener
 {
-    private int counter;
     private Player player;
     private Enemy enemy;
     private ObjectOutputStream toServer;
@@ -27,11 +26,9 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     private Socket socket;
     private HUD hud;
 
-
     public GameDrawer()
     {
         super.setFocusable(true);
-        this.counter = 0;
         this.hud = new HUD(this.player);
 
         this.player = new Player(new Point(200,200), LoginView.getUsername(),true);
@@ -47,7 +44,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             JOptionPane.showMessageDialog(this,"Cannot connect to server");
             System.exit(1);
         }
-
         this.dataReceiver = new DataReceiver(this.socket,this);
         new Thread(this.dataReceiver).start();
         Timer timer = new Timer(1000/60,this);
@@ -66,7 +62,7 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
 
             TiledMap map = new TiledMap("res/map/map.json");
             g2d.setFont(new Font("Arial", Font.PLAIN, 16));
-            map.debugDraw(g2d);
+            map.draw(g2d);
             player.draw(g2d, this.dataReceiver.getPlayers());
             List<Enemy> enemies = new ArrayList<>(this.dataReceiver.getEnemies());
             EnemyHealthComparator enemyHealthComparator = new EnemyHealthComparator();
@@ -75,11 +71,11 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
             List<Player> playerList = new ArrayList<>(this.dataReceiver.getPlayers().values());
             Collections.sort(playerList);
             int j = 0;
-            for(Player playa: playerList)
+            for(Player p: playerList)
             {
                 g2d.drawString("Current online players:",800,15);
                 j++;
-                g2d.drawString(playa.getName() + "",900,30 + (j * 15));
+                g2d.drawString(p.getName() + "",900,30 + (j * 15));
             }
 
             int i = 0;
@@ -139,10 +135,6 @@ public class GameDrawer extends JPanel implements KeyListener, ActionListener
     public void actionPerformed(ActionEvent e)
     {
         player.update(this.dataReceiver, this);
-        if(player.getAttackedEnemy() != null)
-        {
-            System.out.println("got enemy");
-        }
         repaint();
     }
 

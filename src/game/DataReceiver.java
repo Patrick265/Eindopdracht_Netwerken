@@ -2,9 +2,7 @@ package game;
 
 import game.NPC.Enemy;
 import game.character.Player;
-import presentation.IntroFrame;
 import server.logic.ServerPKG;
-
 import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,10 +10,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DataReceiver implements Runnable
@@ -38,7 +33,7 @@ public class DataReceiver implements Runnable
     public void run() {
         try {
 
-            System.out.println("Entered in DataReciever" + "\n" + "-------------------------------");
+            System.out.println("Entered in DataReceiver" + "\n" + "-------------------------------");
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 
             while (true) {

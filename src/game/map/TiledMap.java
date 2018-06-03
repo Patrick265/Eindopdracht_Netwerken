@@ -72,7 +72,7 @@ public class TiledMap extends JPanel {
 
     }
 
-    public void debugDraw(Graphics2D g2d)
+    public void draw(Graphics2D g2d)
     {
         AffineTransform tx = new AffineTransform();
         for (TiledLayer l : layers)

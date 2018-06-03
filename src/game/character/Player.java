@@ -3,9 +3,7 @@ package game.character;
 import game.DataReceiver;
 import game.GameDrawer;
 import game.NPC.Enemy;
-import game.skills.Attack;
 import game.skills.Skills;
-import game.skills.Strength;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,7 +14,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class Player implements Serializable, Comparable<Player>
 {
@@ -110,7 +107,7 @@ public class Player implements Serializable, Comparable<Player>
     {
         return "Player{" +
                 "location=" + location +
-                ", name='" + name + '\'' +
+                ", name='" + name +
                 ", attacking=" + attacking +
                 ", dealtDamage=" + dealtDamage +
                 ", attackedEnemy=" + attackedEnemy +
@@ -171,7 +168,7 @@ public class Player implements Serializable, Comparable<Player>
 
     @Override
     public int compareTo(Player o) {
-        int d = getName().compareTo(o.getName());
-        return d;
+        int compare = getName().compareTo(o.getName());
+        return compare;
         }
     }

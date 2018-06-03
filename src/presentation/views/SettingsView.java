@@ -11,9 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Patrick de Jong
- */
 public class SettingsView extends JPanel
 {
     private JComboBox<Dimension> resolutionPullDown;

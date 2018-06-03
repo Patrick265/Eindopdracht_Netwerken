@@ -89,11 +89,10 @@ public class Enemy implements Serializable
     {
         isAlive = alive;
     }
-
-    public Skills getSkills() {
+    public Skills getSkills()
+    {
         return skills;
     }
-
     public void setSkills(Skills skills) {
         this.skills = skills;
     }
@@ -113,5 +112,4 @@ public class Enemy implements Serializable
     {
         return id;
     }
-
 }

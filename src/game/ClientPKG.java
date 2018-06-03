@@ -1,10 +1,7 @@
 package game;
 
-import game.NPC.Enemy;
 import game.character.Player;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class ClientPKG implements Serializable
 {

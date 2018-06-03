@@ -1,7 +1,5 @@
 package datamanager;
 
-import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion;
-
 import java.awt.*;
 
 public class Settings
