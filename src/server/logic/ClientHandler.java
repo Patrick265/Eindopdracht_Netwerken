@@ -48,6 +48,8 @@ public class ClientHandler implements Runnable
         {
             this.player.setConnected(false);
             System.out.println("User disconnected from the server");
+            textArea.append("\n" +this.player.getName() + " disconnected from the server");
+            textArea.append("\nCurrently " + (server.getPlayers().size() - 1) + " players online.");
 
         }
         catch (EOFException e) {

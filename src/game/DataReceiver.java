@@ -52,8 +52,10 @@ public class DataReceiver implements Runnable
                 } finally {
                     lock.unlock();
                 }
-
             }
+        } catch(IllegalMonitorStateException e2) {
+            JOptionPane.showMessageDialog(null, "Server has closed!");
+            System.exit(1);
         } catch (SocketException e) {
             JOptionPane.showMessageDialog(null, "Server has closed!");
             System.exit(1);
